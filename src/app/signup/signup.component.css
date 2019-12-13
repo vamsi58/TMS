@@ -1,0 +1,10 @@
+.signup-div{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-element {
+  width: 100%;
+}

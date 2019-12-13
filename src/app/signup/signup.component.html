@@ -1,0 +1,35 @@
+<div class="signup-div">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        SIGN UP
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="formGroup" (ngSubmit)="onLogin(formGroup.value)" class="form">
+        <mat-form-field floatLabel="never" class="form-element">
+          <input name = "email" type="text" matInput placeholder="Username" formControlName="email">
+          <mat-error *ngIf="formGroup.controls['email'].invalid">
+            {{getError('user')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never" class="form-element">
+          <input type="password" matInput placeholder="Password" formControlName="password">
+          <mat-error *ngIf="!formGroup.controls['password'].valid">
+            {{getError('pass')}}
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-element">
+          <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Sign Up</button>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+        Already a member?
+        <a href="#" routerLink="/login">Sign in here</a>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
