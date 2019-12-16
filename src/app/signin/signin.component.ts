@@ -34,9 +34,9 @@ export class SigninComponent implements OnInit, OnDestroy {
 
   getError(el) {
     switch (el) {
-      case 'username':
+      case 'email':
         if (this.formGroup.get('email').hasError('required')) {
-          return 'Username required';
+          return 'Email required';
         }
         break;
       case 'password':
@@ -54,7 +54,6 @@ export class SigninComponent implements OnInit, OnDestroy {
       return;
     }
     this.isLoading = true;
-    console.log(this.formGroup.get('email').value);
     this.authService.signin(this.formGroup.get('email').value, this.formGroup.get('password').value);
 
   }

@@ -7,11 +7,10 @@ const router = express.Router();
 router.post("/signup", (req, res, next) => {
     bcrypt.hash(req.body.password, 10).then(hash => {
         const user = new User({
-            fname: req.body.fname,
-            lname: req.body.lname,
-            dob: req.body.dob,
-            gender: req.body.gender,
+            name: req.body.name,
             email: req.body.email,
+            dob: req.body.dob,
+            roles: req.body.roles,
             password: hash
         });
         user.save()
@@ -33,7 +32,7 @@ router.post("/signin", (req, res, next) => {
     let fetchedUser;
     User.findOne({ email: req.body.email })
         .then(user => {
-            if (!user) {
+            if (!user) {               
                 return res.status(401).json({
                     message: "Auth failed First" + user
                 });
@@ -42,7 +41,7 @@ router.post("/signin", (req, res, next) => {
             return bcrypt.compare(req.body.password, user.password);
         })
         .then(result => {
-            if (!result) {
+            if (!result) {               
                 return res.status(401).json({
                     message: "Auth failed"
                 });

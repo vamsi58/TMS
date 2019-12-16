@@ -8,3 +8,12 @@
 .form-element {
   width: 100%;
 }
+
+mat-radio-button{
+  margin-right: 1em;
+}
+
+.mat-form-field--no-underline .mat-input-underline {
+  background-color: transparent;
+}
+

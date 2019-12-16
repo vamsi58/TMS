@@ -10,20 +10,64 @@ import { SignupComponent } from './signup/signup.component';
 import { AuthInterceptor } from "./ineterceptors/auth.ineterceptor";
 import { ErrorInterceptor } from "./ineterceptors/error.interceptor";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
-import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { MatExpansionModule } from "@angular/material/expansion";
-import { MatInputModule } from "@angular/material/input";
-import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatToolbarModule } from "@angular/material/toolbar";
+
+
+import { NavbarComponent } from './navbar/navbar.component';
+import { HomeComponent } from './home/home.component';
+import { FlexLayoutModule } from "@angular/flex-layout";
+
+import {
+  MatAutocompleteModule,
+  MatBadgeModule,
+  MatBottomSheetModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatCommonModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatLineModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatOptionModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatPseudoCheckboxModule,
+  MatRadioModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTabsModule,
+  MatTableModule,
+  MatToolbarModule,
+  MatTooltipModule,
+  MatTreeModule,
+  MAT_DIALOG_DATA,
+  MatDialogRef
+} from '@angular/material';
 
 @NgModule({
   declarations: [
     AppComponent,
     SigninComponent,
-    SignupComponent
+    SignupComponent,
+    NavbarComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -32,17 +76,51 @@ import { MatToolbarModule } from "@angular/material/toolbar";
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    MatInputModule,
-    MatCardModule,
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatBottomSheetModule,
     MatButtonModule,
-    MatToolbarModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatCommonModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
     MatExpansionModule,
-    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatLineModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatOptionModule,
     MatPaginatorModule,
-    MatDialogModule
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatPseudoCheckboxModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatStepperModule,
+    MatTabsModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatTreeModule,
+    FlexLayoutModule,
+
   ],
-  providers: [ { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

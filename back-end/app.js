@@ -8,7 +8,7 @@ const userRoutes = require("./api/user");
 
 
 const server = 'localhost:27017'; // Localhost:Default Port
-const database = 'test-db';       // Test Database Name 
+const database = 'tms-db1';       // Test Database Name 
 
 const app = express();
 

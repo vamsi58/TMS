@@ -6,30 +6,56 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="formGroup" (ngSubmit)="onLogin(formGroup.value)" class="form">
+      <form [formGroup]="formGroup" (ngSubmit)="onSignup(formGroup.value)" class="form">
+
         <mat-form-field floatLabel="never" class="form-element">
-          <input name = "email" type="text" matInput placeholder="Username" formControlName="email">
-          <mat-error *ngIf="formGroup.controls['email'].invalid">
-            {{getError('user')}}
+          <input name="name" type="text" matInput placeholder="Full Name" formControlName="name">
+          <mat-error *ngIf="formGroup.controls['name'].invalid">
+            {{getError('name')}}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field floatLabel="never" class="form-element">
-          <input type="password" matInput placeholder="Password" formControlName="password">
+          <input name="email" type="text" matInput placeholder="Email Address" formControlName="email">
+          <mat-error *ngIf="formGroup.controls['email'].invalid">
+            {{getError('email')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never" class="form-element">
+          <input name="password" type="password" matInput placeholder="Password" formControlName="password">
           <mat-error *ngIf="!formGroup.controls['password'].valid">
-            {{getError('pass')}}
+            {{getError('password')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never" class="form-element">
+          <input name="dob" matInput [matDatepicker]="picker" placeholder="Date Of Birth" formControlName="dob">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="!formGroup.controls['dob'].valid">
+            {{getError('dob')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never" class="form-element">
+          <mat-select name="roles" placeholder="Select User Roles" multiple>
+            <mat-option *ngFor="let role of rolesList; let i = index" [value]="role">{{role}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="!formGroup.controls['roles'].valid">
+          {{getError('roles')}}
           </mat-error>
         </mat-form-field>
 
         <div class="form-element">
           <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Sign Up</button>
         </div>
+
       </form>
     </mat-card-content>
     <mat-card-actions>
-        Already a member?
-        <a href="#" routerLink="/login">Sign in here</a>
+      Already a member?
+      <a routerLink="/signin">Sign in here</a>
     </mat-card-actions>
   </mat-card>
 </div>
-
