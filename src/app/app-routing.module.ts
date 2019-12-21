@@ -27,7 +27,7 @@ const routes: Routes = [
   { 
     path: '', 
     component: NavbarComponent, 
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
     children: [
     { 
       path: 'home', 

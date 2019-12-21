@@ -1,35 +1,70 @@
 <div class="basic-container">
-  <mat-toolbar color="primary">
-   
-   <!-- Home Button -->
-   <button mat-button routerLink="/home">
-     <mat-icon>home</mat-icon> 
-     TMS
-   </button>
+  <mat-sidenav-container fullscreen>
+    <mat-toolbar color="primary">
+      <mat-icon (click)="sidenav.toggle()" class="sidenav-menu">menu</mat-icon>
 
-    <!-- Questions Menu -->
-    <button mat-button [matMenuTriggerFor]="questions">Questions</button>
-    <mat-menu #questions="matMenu">
-      <button mat-menu-item>View Questions</button>
-      <button mat-menu-item>Add Questions</button>
-      <button mat-menu-item>Update Questions</button>
-      <button mat-menu-item>Delete Questions</button>
-    </mat-menu>
-
-    <!-- Logout Menu -->
-    <span class="logout">
-      <span class="bell-icon">
-        <mat-icon>notifications_none</mat-icon>
-      </span>
-      <button mat-mini-fab matTooltip="Vamsi Mallempalli" [matMenuTriggerFor]="menu" [matTooltipPosition]="position.value" color="accent">
-        <mat-icon>perm_identity</mat-icon>
+      <!-- Home Button -->
+      <button mat-button routerLink="/home">
+        TMS
       </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="onLogout()">
-          <mat-icon>power_settings_new</mat-icon>
-          <span>Logout</span>
+
+      <!-- Logout Menu -->
+      <span class="logout">
+        <span class="bell-icon">
+          <mat-icon>notifications_none</mat-icon>
+        </span>
+        <button mat-mini-fab matTooltip="Vamsi Mallempalli" [matMenuTriggerFor]="menu" [matTooltipPosition]="position.value" color="accent">
+          <mat-icon>perm_identity</mat-icon>
         </button>
-      </mat-menu>
-    </span>
-  </mat-toolbar>
-  <router-outlet></router-outlet>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onLogout()">
+            <mat-icon>power_settings_new</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </span>
+    </mat-toolbar>
+
+    <mat-sidenav #sidenav mode="side" [ngStyle]="{ 'width.em': sidenavWidth }" opened="true" (mouseenter)="increase()"
+      (mouseleave)="decrease()">
+
+      <mat-nav-list>
+        <mat-list-item routerLink="/home" routerLinkActive="active">
+          <mat-icon mat-list-icon>home</mat-icon>
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h5 class="lead">TMS</h5>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item routerLink="1" routerLinkActive="active">
+          <mat-icon mat-list-icon>person</mat-icon>
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h5 class="lead">Users</h5>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item routerLink="2" routerLinkActive="active">
+          <mat-icon mat-list-icon>subject</mat-icon>
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h5 class="lead">Questions</h5>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item routerLink="3" routerLinkActive="active">
+          <mat-icon mat-list-icon>Tests</mat-icon>
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h5 class="lead">Tests</h5>
+          </div>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <div >
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-container>
+</div>
