@@ -60,6 +60,8 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef
 } from '@angular/material';
+import { QuestionsComponent } from './questions/questions/questions.component';
+import { QuestionAddComponent } from './questions/question-add/question-add.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import {
     SigninComponent,
     SignupComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    QuestionsComponent,
+    QuestionAddComponent
   ],
   imports: [
     BrowserModule,

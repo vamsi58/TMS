@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 
 
 app.use("/api/user", userRoutes);
-//app.use("/api/question", questionRoutes);
+app.use("/api/question", questionRoutes);
 //app.use("/api/questiontype", questiontypeRoutes);
 //app.use("/api/competencearea", competenceareaRoutes);
 //app.use("/api/course", courseRoutes);

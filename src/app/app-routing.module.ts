@@ -6,6 +6,7 @@ import { SignupComponent } from "./signup/signup.component";
 import { SigninComponent } from "./signin/signin.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { HomeComponent } from "./home/home.component";
+import { QuestionsComponent } from "./questions/questions/questions.component";
 
 
 const routes: Routes = [
@@ -33,9 +34,9 @@ const routes: Routes = [
       path: 'home', 
       component: HomeComponent
     }, 
-    // { path: "questions", 
-    //   component: QuestionsListComponent
-    // },
+    { path: "questions", 
+     component: QuestionsComponent
+    },
        
      ]
 },
