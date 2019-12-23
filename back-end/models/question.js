@@ -3,8 +3,8 @@ const uniqueValidator = require("mongoose-unique-validator");
 const AnswerOptionSchema = require("./answer");
 
 const QuestionSchema = mongoose.Schema({
-  quesid:         { type: Number},
-  questype:       { type: String},
+  quesId:         { type: Number},
+  quesType:       { type: String},
   quesCat:        { type: String},
   quesSubCat:     { type: String},
   question:       { type: String, minlength: 10, maxlength: 1000, required: true},

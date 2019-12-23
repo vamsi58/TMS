@@ -1,8 +1,10 @@
+import { Answer } from './../models/answer.model';
 import { Question } from './../models/question.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { Subject, pipe } from "rxjs";
+import { Subject, pipe, from } from "rxjs";
+
 
 import {
   map,
@@ -108,20 +110,4 @@ export class QuestionService {
   deleteQuestion(quesid: string) {
     return this.http.delete("http://localhost:3000/api/question/delete/" + quesid);
   }
-
-
-  // getQuestion(quesid: string) {
-  //   return this.http.get<{
-  //     quesid: string;
-  //     questype: string;
-  //     quesCat: string; 
-  //     quesSubCat: string;
-  //     question: string;
-  //     quesFormatted: string;
-  //     quesAnswers: Answer[];
-  //     quesReason:string;
-
-  //   }>("http://localhost:3000/api/question/update" + quesid);
-  // }
-
 }
