@@ -31,8 +31,8 @@ export class QuestionService {
   }
 
   //Add Question
-  createQuestion(dummyId: string, quesid: string, questype: string, quesCat: string, quesSubCat: string, question: string, quesFormatted: string, quesAnswers: Answer[], quesReason: string, quesAproved: boolean, quesComplex:string) {
-    const Question: Question = { id: dummyId, quesid: quesid, questype: questype, quesCat: quesCat, quesSubCat: quesSubCat, question: question, quesFormatted: quesFormatted, quesAnswers: quesAnswers, quesReason: quesReason, quesAproved: quesAproved, quesComplex:quesComplex };
+  createQuestion(dummyId: string, quesid: number, questype: string, quesCat: string, quesSubCat: string, question: string, quesFormatted: string, quesAnswers: Answer[], quesReason: string, quesAproved: boolean, quesComplex:string) {
+    const Question: Question = { id: dummyId, quesId: quesid, quesType: questype, quesCat: quesCat, quesSubCat: quesSubCat, question: question, quesFormatted: quesFormatted, quesAnswers: quesAnswers, quesReason: quesReason, quesAproved: quesAproved, quesComplex:quesComplex };
 
 
     this.http
@@ -51,7 +51,7 @@ export class QuestionService {
                filteredCats: string[],
               filteredSubCats: string[] ) {
 
-  //console.log(filteredSubCats);
+     console.log("inside view service");
     const queryParams = `?pagesize=${questionsperpage}&page=${currentPage}&Type=${filteredType}&Cat=${filteredCats}&SubCat=${filteredSubCats}`;
     return this.http
       .get<{ message: string; questions: any; maxQuestions: number }>(
@@ -63,8 +63,8 @@ export class QuestionService {
             questions: questionData.questions.map(question => {
               return {
                 id: question._id,
-                quesid: question.quesid,
-                questype: question.questype,
+                quesId: question.quesId,
+                quesType: question.quesType,
                 quesCat: question.quesCat,
                 quesSubCat: question.quesSubCat,
                 question: question.question,
@@ -95,7 +95,7 @@ export class QuestionService {
 
   //Update Question
   updateQuestion(id: string, quesid: string, questype: string, quesCat: string, quesSubCat: string, question: string, quesFormatted: string, quesAnswers: Answer[], quesReason: string, quesAproved: boolean, quesComplex: string) {
-    const questionUpdateData: Question = { id: id, quesid: quesid, questype: questype, quesCat: quesCat, quesSubCat: quesSubCat, question: question, quesFormatted: quesFormatted, quesAnswers: quesAnswers, quesReason: quesReason, quesAproved: quesAproved , quesComplex: quesComplex };
+    const questionUpdateData: Question = { id: id, quesId: 1, quesType: questype, quesCat: quesCat, quesSubCat: quesSubCat, question: question, quesFormatted: quesFormatted, quesAnswers: quesAnswers, quesReason: quesReason, quesAproved: quesAproved , quesComplex: quesComplex };
 
     console.log(questionUpdateData);
      this.http

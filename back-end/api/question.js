@@ -1,29 +1,54 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const checkAuth = require("../middleware/check-auth");
+const checkAuth = require("../authentication/authenticate");
 const Question = require("../models/question");
 
 const router = express.Router();
 
 //Insert record
 router.post("/add", (req, res, next) => {
+  // const question = new Question({
+  //   quesid: req.body.quesid,
+  //   questype: req.body.questype,
+  //   quesCat: req.body.quesCat,
+  //   quesSubCat: req.body.quesSubCat,
+  //   question: req.body.question,
+  //   quesFormatted: req.body.quesFormatted,
+  //   answerOptions: req.body.quesAnswers,
+  //   reason: req.body.quesReason,
+  //   quesAproved: req.body.quesAproved,
+  //   quesComplex: req.body.quesComplex
+  // });
+  // question
+  //   .save()
+  //   .then(result => {
+  //     res.status(201).json({
+  //       message: "Question created!",
+  //       result: result
+  //     });
+  //   })
+  //   .catch(err => {
+  //     res.status(500).json({
+  //       message: "Invalid Here!" + err
+  //     });
+  //   });
+
   const question = new Question({
-    quesid: req.body.quesid,
-    questype: req.body.questype,
-    quesCat: req.body.quesCat,
-    quesSubCat: req.body.quesSubCat,
-    question: req.body.question,
-    quesFormatted: req.body.quesFormatted,
+    quesId: 2,
+    quesType: "Objective",
+    quesCat: "test---------------------",
+    quesSubCat: "test-subcat",
+    question: "test-question",
+    quesFormatted: "test question Formatted",
     answerOptions: req.body.quesAnswers,
-    reason: req.body.quesReason,
-    quesAproved: req.body.quesAproved,
-    quesComplex: req.body.quesComplex
+    reason: "",
+    quesAproved: false,
+    quesComplex: ""
   });
   question
-    .save()
-    .then(result => {
+    .save().then(result => {
       res.status(201).json({
         message: "Question created!",
         result: result
@@ -33,6 +58,7 @@ router.post("/add", (req, res, next) => {
       res.status(500).json({
         message: "Invalid Here!" + err
       });
+      console.log("error in questions creation"+err);
     });
 
 });
@@ -44,6 +70,9 @@ router.get("/view", (req, res, next) => {
   const filteredType = req.query.Type;
   var filteredCats = req.query.Cat;
   var filteredSubCats = req.query.SubCat;
+  console.log("inside view all api"); 
+
+  
 
   var quesQuery;
   var whrCondition = {};

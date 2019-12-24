@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 
 const userRoutes = require("./api/user");
+const questionRoutes = require("./api/question");
 
 
 const server = 'localhost:27017'; // Localhost:Default Port

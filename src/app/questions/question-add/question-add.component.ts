@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuestionAddComponent implements OnInit {
 
+  public value: string = 'test text test'; 
+  
+
   constructor() { }
 
   ngOnInit() {

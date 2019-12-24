@@ -1,3 +1,4 @@
+import { from } from 'rxjs';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -7,6 +8,7 @@ import { SigninComponent } from "./signin/signin.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { HomeComponent } from "./home/home.component";
 import { QuestionsComponent } from "./questions/questions/questions.component";
+import { QuestionAddComponent } from "./questions/question-add/question-add.component";   
 
 
 const routes: Routes = [
@@ -36,6 +38,9 @@ const routes: Routes = [
     }, 
     { path: "questions", 
      component: QuestionsComponent
+    },
+    { path: "add-question", 
+     component: QuestionAddComponent
     },
        
      ]

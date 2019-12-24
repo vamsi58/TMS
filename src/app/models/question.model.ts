@@ -2,8 +2,8 @@ import {Answer} from './answer.model';
 
 export interface Question {
   id : string;
-  quesid: string;
-  questype: string;
+  quesId: number;
+  quesType: string;
   quesCat: string;
   quesSubCat: string;
   question: string;
