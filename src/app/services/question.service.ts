@@ -31,8 +31,8 @@ export class QuestionService {
   }
 
   //Add Question
-  createQuestion(dummyId: string, quesid: number, questype: string, quesCat: string, quesSubCat: string, question: string, quesFormatted: string, quesAnswers: Answer[], quesReason: string, quesAproved: boolean, quesComplex:string) {
-    const Question: Question = { id: dummyId, quesId: quesid, quesType: questype, quesCat: quesCat, quesSubCat: quesSubCat, question: question, quesFormatted: quesFormatted, quesAnswers: quesAnswers, quesReason: quesReason, quesAproved: quesAproved, quesComplex:quesComplex };
+  createQuestion(dummyId: string, type: string, category: string, competency: string, text: string, textHtml: string, options: Answer[], comment: string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
+    const Question: Question = { id: dummyId, type: type, category: category, competency: competency, text: text, textHtml: textHtml, options: options, comment: comment, status: status, complexity:complexity, createdBy:createdBy, updatedBy:updatedBy, approvedBy:approvedBy };
 
 
     this.http
@@ -50,8 +50,6 @@ export class QuestionService {
                filteredType: string,
                filteredCats: string[],
               filteredSubCats: string[] ) {
-
-     console.log("inside view service");
     const queryParams = `?pagesize=${questionsperpage}&page=${currentPage}&Type=${filteredType}&Cat=${filteredCats}&SubCat=${filteredSubCats}`;
     return this.http
       .get<{ message: string; questions: any; maxQuestions: number }>(
@@ -63,16 +61,18 @@ export class QuestionService {
             questions: questionData.questions.map(question => {
               return {
                 id: question._id,
-                quesId: question.quesId,
-                quesType: question.quesType,
-                quesCat: question.quesCat,
-                quesSubCat: question.quesSubCat,
-                question: question.question,
-                quesFormatted: question.quesFormatted,
-                quesAnswers: question.answerOptions,
-                quesReason: question.reason,
-                quesAproved: question.quesAproved,
-                quesComplex: question.quesComplex
+                type: question.type,
+                category: question.category,
+                competency: question.competency,
+                text: question.text,
+                textHtml: question.textHtml,
+                options: question.options,
+                comment: question.comment,
+                status: question.status,
+                complexity: question.complexity,
+                createdBy: question.createdBy,
+                updatedBy: question.updatedBy,
+                approvedBy: question.approvedBy,
               };
             }),
             maxQuestions: questionData.maxQuestions
@@ -94,8 +94,8 @@ export class QuestionService {
   }
 
   //Update Question
-  updateQuestion(id: string, quesid: string, questype: string, quesCat: string, quesSubCat: string, question: string, quesFormatted: string, quesAnswers: Answer[], quesReason: string, quesAproved: boolean, quesComplex: string) {
-    const questionUpdateData: Question = { id: id, quesId: 1, quesType: questype, quesCat: quesCat, quesSubCat: quesSubCat, question: question, quesFormatted: quesFormatted, quesAnswers: quesAnswers, quesReason: quesReason, quesAproved: quesAproved , quesComplex: quesComplex };
+  updateQuestion(id: string, type: string, category: string, competency: string, text: string, textHtml: string, options: Answer[], comment: string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
+    const questionUpdateData: Question = { id: id, type: type, category: category, competency: competency, text: text, textHtml: textHtml, options: options, comment: comment, status: status, complexity:complexity, createdBy:createdBy, updatedBy:updatedBy, approvedBy:approvedBy };
 
     console.log(questionUpdateData);
      this.http
@@ -107,7 +107,7 @@ export class QuestionService {
   }
 
   //Delete Question
-  deleteQuestion(quesid: string) {
-    return this.http.delete("http://localhost:3000/api/question/delete/" + quesid);
+  deleteQuestion(id: string) {
+    return this.http.delete("http://localhost:3000/api/question/delete/" + id);
   }
 }

@@ -28,34 +28,34 @@
          </td>
         </ng-container>
         
-        <ng-container matColumnDef="quesId">
+        <ng-container matColumnDef="id">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.quesId}}</mat-cell>
+            <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="quesType">
+        <ng-container matColumnDef="type">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.quesType}}</mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.type}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="quesCat">
+        <ng-container matColumnDef="category">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Category</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.quesCat}}</mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.category}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="quesSubCat">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Sub-Category</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.quesSubCat}}</mat-cell>
+        <ng-container matColumnDef="competency">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>competency</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.competency}}</mat-cell>
         </ng-container>-->
 
-        <ng-container matColumnDef="question">
+        <ng-container matColumnDef="text">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Text</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.question}}</mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.text}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef>
-                <button mat-icon-button color="primary" (click)="addNew()">
+                <button mat-icon-button color="primary" routerLink="/add-question">
                     <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
                 </button>
             </mat-header-cell>

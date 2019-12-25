@@ -1,5 +1,5 @@
 <div class="signin-div">
-  <mat-card >
+  <mat-card [ngClass]="'mat-elevation-z8'">
     <mat-card-header>
       <mat-card-title>
         SIGN IN
@@ -7,15 +7,17 @@
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="formGroup" (ngSubmit)="onSignin(formGroup.value)" class="form">
-        <mat-form-field floatLabel="never" class="form-element">
-          <input name = "email" type="text" matInput placeholder="email" formControlName="email">
+        <mat-form-field floatLabel="never" class="form-element" appearance="outline">
+          <mat-label>Username</mat-label>
+          <input name = "email" type="text" matInput placeholder="Email Address" formControlName="email">
           <mat-error *ngIf="formGroup.controls['email'].invalid">
             {{getError('email')}}
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field floatLabel="never" class="form-element">
-          <input type="password" matInput placeholder="Password" formControlName="password">
+        <mat-form-field floatLabel="never" class="form-element" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input type="password" matInput placeholder="Password" formControlName="password" >
           <mat-error *ngIf="!formGroup.controls['password'].valid">
             {{getError('password')}}
           </mat-error>

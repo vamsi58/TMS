@@ -32,8 +32,8 @@ export class AuthService {
     return this.authStatusListener.asObservable();
   }
 
-  createUser(name: string, email: string, password: string, dob: Date, roles:string[]) {
-    const signupData: SignupModel = { name: name,  dob: dob,  email: email, password: password, roles:roles };
+  createUser(firstName: string, lastName: string, email: string, phone:number, password: string,  dob: Date, roles:string[], groups:string[]) {
+    const signupData: SignupModel = { firstName: firstName, lastName:lastName, dob: dob,  email: email, phone: phone, password: password, roles:roles, groups: groups };
     this.http
       .post("http://localhost:3000/api/user/signup", signupData)
       .subscribe(() => {

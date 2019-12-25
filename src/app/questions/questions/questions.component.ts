@@ -32,7 +32,7 @@ export class QuestionsComponent implements OnInit {
   private filteredCats: string[];
   private filteredSubcats: string[];
   questions: Question[] = [];
-  displayedColumns = ['select','quesId', 'quesType', 'quesCat','quesSubCat', 'question','actions' ];
+  displayedColumns = ['select','id', 'type', 'category','competency', 'text','actions' ];
   dataSource = new MatTableDataSource<Question>(this.questions);
   selection = new SelectionModel<Question>(true, []);
 
@@ -86,6 +86,6 @@ export class QuestionsComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.quesId + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 }

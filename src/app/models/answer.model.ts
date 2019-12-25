@@ -1,5 +1,5 @@
 export interface Answer {
-    optionNumber: number;
-    answerBody: string; 
-    isCorrectAnswer: Boolean 
+    option    : number;
+    answer    : string; 
+    isCorrect : Boolean 
   }

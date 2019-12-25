@@ -3,52 +3,32 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const checkAuth = require("../authentication/authenticate");
+const checkAuth = require("../authentication/authenticate");
 const Question = require("../models/question");
+const Counter = require("../misc/counter");
 
 const router = express.Router();
 
 //Insert record
 router.post("/add", (req, res, next) => {
-  // const question = new Question({
-  //   quesid: req.body.quesid,
-  //   questype: req.body.questype,
-  //   quesCat: req.body.quesCat,
-  //   quesSubCat: req.body.quesSubCat,
-  //   question: req.body.question,
-  //   quesFormatted: req.body.quesFormatted,
-  //   answerOptions: req.body.quesAnswers,
-  //   reason: req.body.quesReason,
-  //   quesAproved: req.body.quesAproved,
-  //   quesComplex: req.body.quesComplex
-  // });
-  // question
-  //   .save()
-  //   .then(result => {
-  //     res.status(201).json({
-  //       message: "Question created!",
-  //       result: result
-  //     });
-  //   })
-  //   .catch(err => {
-  //     res.status(500).json({
-  //       message: "Invalid Here!" + err
-  //     });
-  //   });
-
   const question = new Question({
-    quesId: 2,
-    quesType: "Objective",
-    quesCat: "test---------------------",
-    quesSubCat: "test-subcat",
-    question: "test-question",
-    quesFormatted: "test question Formatted",
-    answerOptions: req.body.quesAnswers,
-    reason: "",
-    quesAproved: false,
-    quesComplex: ""
+    _id: getNextSequence("question_id"),
+    type: req.body.type,
+    category: req.body.category,
+    competency: req.body.competency,
+    text: req.body.text,
+    textHtml: req.body.textHtml,
+    options: req.body.options,
+    comment: req.body.comment,
+    status: req.body.status,
+    complexity: req.body.complexity,
+    createdBy: req.body.createdBy,
+    updatedBy: req.body.updatedBy,
+    approvedBy: req.body.approvedBy
   });
   question
-    .save().then(result => {
+    .save()
+    .then(result => {
       res.status(201).json({
         message: "Question created!",
         result: result
@@ -58,9 +38,7 @@ router.post("/add", (req, res, next) => {
       res.status(500).json({
         message: "Invalid Here!" + err
       });
-      console.log("error in questions creation"+err);
     });
-
 });
 
 //View all records
@@ -72,28 +50,9 @@ router.get("/view", (req, res, next) => {
   var filteredSubCats = req.query.SubCat;
   console.log("inside view all api"); 
 
-  
-
   var quesQuery;
   var whrCondition = {};
 
-  if (filteredType !== ' ' && filteredType !== 'All') {
-    whrCondition["questype"] = filteredType;
-  }
-  
-  if ((req.query.Cat).length > 0) {
-    if (filteredCats !== ' ' && filteredCats !== 'All') {
-      whrCondition["quesCat"] = { $in: filteredCats.split(",") };
-    }
-  }
-  
-  if ((req.query.SubCat).length > 0) {
-    if (filteredSubCats !== ' ' && filteredSubCats !== 'All') {
-      whrCondition["quesSubCat"] = { $in: filteredSubCats.split(",") };
-
-    }
-  }
-  console.log(whrCondition);
   quesQuery = Question.find(whrCondition);
 
   let fetchedQuestions;
@@ -120,8 +79,8 @@ router.get("/view", (req, res, next) => {
 });
 
 //Delete record
-router.delete("/delete/:quesid", checkAuth, (req, res, next) => {
-  Question.deleteOne({ quesid: req.params.quesid })
+router.delete("/delete/:id", checkAuth, (req, res, next) => {
+  Question.deleteOne({ _id: req.params.id })
     .then(result => {
       console.log(result);
       if (result.n > 0) {
@@ -142,8 +101,8 @@ router.delete("/delete/:quesid", checkAuth, (req, res, next) => {
 });
 
 //View record by Id
-router.get("/getQuestion/:quesid", (req, res, next) => {
-  Question.findById(req.params.quesid)
+router.get("/getQuestion/:id", (req, res, next) => {
+  Question.findById(req.params.id)
     .then(post => {
       if (post) {
         res.status(200).json(post);
@@ -162,18 +121,20 @@ router.get("/getQuestion/:quesid", (req, res, next) => {
 router.put("/update/:id", checkAuth, (req, res, next) => {
   const question = new Question({
     _id: req.params.id,
-    quesid: req.body.quesid,
-    questype: req.body.questype,
-    quesCat: req.body.quesCat,
-    quesSubCat: req.body.quesSubCat,
-    question: req.body.question,
-    quesFormatted: req.body.quesFormatted,
-    answerOptions: req.body.quesAnswers,
-    reason: req.body.quesReason,
-    quesAproved: req.body.quesAproved,
-    quesComplex: req.body.quesComplex
+    type: req.body.type,
+    category: req.body.category,
+    competency: req.body.competency,
+    text: req.body.text,
+    textHtml: req.body.textHtml,
+    options: req.body.options,
+    comment: req.body.comment,
+    status: req.body.status,
+    complexity: req.body.complexity,
+    createdBy: req.body.createdBy,
+    updatedBy: req.body.updatedBy,
+    approvedBy: req.body.approvedBy
   });
-  console.log(question);
+
   Question.updateOne({ _id: req.params.id }, question)
     .then(result => {
       if (result.nModified > 0) {

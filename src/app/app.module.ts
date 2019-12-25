@@ -10,6 +10,7 @@ import { SignupComponent } from './signup/signup.component';
 import { AuthInterceptor } from "./ineterceptors/auth.ineterceptor";
 import { ErrorInterceptor } from "./ineterceptors/error.interceptor";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 import { NavbarComponent } from './navbar/navbar.component';
@@ -59,6 +60,7 @@ import {
   MatTreeModule,
   MAT_DIALOG_DATA,
   MatDialogRef
+   
 } from '@angular/material';
 import { QuestionsComponent } from './questions/questions/questions.component';
 import { QuestionAddComponent } from './questions/question-add/question-add.component';
@@ -121,6 +123,7 @@ import { QuestionAddComponent } from './questions/question-add/question-add.comp
     MatTooltipModule,
     MatTreeModule,
     FlexLayoutModule,
+    AngularEditorModule
 
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

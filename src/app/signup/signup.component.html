@@ -1,35 +1,55 @@
 <div class="signup-div">
-  <mat-card>
+  <mat-card [ngClass]="'mat-elevation-z8'">
     <mat-card-header>
       <mat-card-title>
         SIGN UP
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="formGroup" (ngSubmit)="onSignup(formGroup.value)" class="form">
+      <form [formGroup]="formGroup" (ngSubmit)="onSignup(formGroup.value)" class="signup-form">
 
-        <mat-form-field floatLabel="never" class="form-element">
-          <input name="name" type="text" matInput placeholder="Full Name" formControlName="name">
-          <mat-error *ngIf="formGroup.controls['name'].invalid">
-            {{getError('name')}}
+        <mat-form-field floatLabel="never" class="form-element form-element-firstName" appearance="outline">
+          <mat-label>First Name</mat-label>
+          <input name="firstName" type="text" matInput placeholder="First Name" formControlName="firstName" autofocus>
+          <mat-error *ngIf="formGroup.controls['firstName'].invalid">
+            {{getError('firstName')}}
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field floatLabel="never" class="form-element">
+        <mat-form-field floatLabel="never" class="form-element form-element-lastName" appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input name="lastName" type="text" matInput placeholder="Last Name" formControlName="lastName">
+          <mat-error *ngIf="formGroup.controls['lastName'].invalid">
+            {{getError('lastName')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never" class="form-element" appearance="outline">
+          <mat-label>Email Address</mat-label>
           <input name="email" type="text" matInput placeholder="Email Address" formControlName="email">
           <mat-error *ngIf="formGroup.controls['email'].invalid">
             {{getError('email')}}
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field floatLabel="never" class="form-element">
+        <mat-form-field floatLabel="never" class="form-element" appearance="outline">
+          <mat-label>Password</mat-label>
           <input name="password" type="password" matInput placeholder="Password" formControlName="password">
           <mat-error *ngIf="!formGroup.controls['password'].valid">
             {{getError('password')}}
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field floatLabel="never" class="form-element">
+        <mat-form-field floatLabel="never" class="form-element form-element-phone" appearance="outline">
+          <mat-label>Phone Number</mat-label>
+          <input name="phone" matInput placeholder="Phone Number" formControlName="phone">
+          <mat-error *ngIf="!formGroup.controls['phone'].valid">
+            {{getError('phone')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="never" class="form-element form-element-dob" appearance="outline">
+          <mat-label>Date Of Birth</mat-label>
           <input name="dob" matInput [matDatepicker]="picker" placeholder="Date Of Birth" formControlName="dob">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
@@ -38,18 +58,29 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field floatLabel="never" class="form-element">
-          <mat-select name="roles" placeholder="Select User Roles" multiple>
-            <mat-option *ngFor="let role of rolesList; let i = index" [value]="role">{{role}}</mat-option>
+        <mat-form-field floatLabel="never" class="form-element" appearance="outline">
+          <mat-label>User Roles</mat-label>
+          <mat-select multiple name="roles" placeholder="Select User Roles" formControlName="roles">
+            <mat-option *ngFor="let role of rolesList; let i = index" [value]="role" (change)="selectRole($event)">{{role}}</mat-option>
           </mat-select>
           <mat-error *ngIf="!formGroup.controls['roles'].valid">
           {{getError('roles')}}
           </mat-error>
         </mat-form-field>
 
-        <div class="form-element">
+        <mat-form-field floatLabel="never" class="form-element form-element-group" appearance="outline">
+          <mat-label>User Group</mat-label>
+          <mat-select multiple name="groups" placeholder="Select User Groups"  formControlName="groups">
+            <mat-option *ngFor="let group of groupsList; let i = index" [value]="group" (change)="selectGroup($event)">{{group}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="!formGroup.controls['groups'].valid">
+          {{getError('groups')}}
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-element" appearance="outline">
           <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Sign Up</button>
-        </div>
+        </div>  
 
       </form>
     </mat-card-content>
