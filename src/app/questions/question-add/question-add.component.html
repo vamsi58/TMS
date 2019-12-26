@@ -7,6 +7,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
+          <mat-divider></mat-divider>
           <form [formGroup]="formGroup" (ngSubmit)="onSignup(formGroup.value)" class="question-add-form">
             <div fxLayout="column">
             <mat-form-field floatLabel="always" class="form-element form-element-type" appearance="outline">
@@ -49,11 +50,12 @@
               {{getError('complexity')}}
               </mat-error>
             </mat-form-field>
-
           </div>
-    
-            <div class="question-editor">
-              <angular-editor formControlName="textHtml"></angular-editor>
+            <mat-divider></mat-divider>
+            
+            <div class="form-element question-editor">
+              <mat-label class = "question-label">Question:</mat-label>
+              <angular-editor [config]="config" formControlName="textHtml"></angular-editor>
             </div>
     
             <div class="form-element" appearance="outline">

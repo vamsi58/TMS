@@ -20,6 +20,21 @@ export class QuestionAddComponent implements OnInit {
   Category = ['Technical', 'Functional'];
   Competency = ['IBM i', 'Java', 'Angular'];
   Complexity = ['High', 'Medium', 'Low'];
+
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '10rem',
+    minHeight: '5rem',
+    
+    minWidth: '15rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+    ]
+  };
   
   constructor(private formBuilder: FormBuilder, public questionService: QuestionService) { }
 

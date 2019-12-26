@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const checkAuth = require("../authentication/authenticate");
-const checkAuth = require("../authentication/authenticate");
 const Question = require("../models/question");
 const Counter = require("../misc/counter");
 
