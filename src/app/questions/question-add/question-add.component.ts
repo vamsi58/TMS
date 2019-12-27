@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { NgForm } from "@angular/forms";
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { QuestionService } from './../../services/question.service';
 
 @Component({
@@ -11,25 +11,23 @@ import { QuestionService } from './../../services/question.service';
 })
 export class QuestionAddComponent implements OnInit {
 
-  name = 'Angular 6';
-  htmlContent = '';
-  htmlContent2 = '';
+
   formGroup: FormGroup;
   public value: string = 'test text test'; 
   Type = ['Objective', 'Descriptive'];
   Category = ['Technical', 'Functional'];
   Competency = ['IBM i', 'Java', 'Angular'];
   Complexity = ['High', 'Medium', 'Low'];
+  objectiveQuestion = true;
 
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
     height: '10rem',
     minHeight: '5rem',
-    
     minWidth: '15rem',
     placeholder: 'Enter text here...',
-    translate: 'no',
+    translate: 'no', 
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
@@ -40,19 +38,48 @@ export class QuestionAddComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    
+    for (let option of this.optionsForm)
+    {
+       console.log((<FormGroup>option).controls);
+    }
   }
 
   createForm(){
     this.formGroup = this.formBuilder.group({
-       'type'      : ['',[Validators.required]],            
-       'category'  : ['',[Validators.required]],       
-       'competency': ['',[Validators.required]],               
+       'type'      : ['',Validators.required],            
+       'category'  : ['',Validators.required],       
+       'competency': ['',Validators.required],               
        'textHtml'  : ['',Validators.required],       
-       'options'   : ['',[Validators.required]],         
+       'options'   : this.formBuilder.array([]),         
        'comment'   : ['',Validators.required],                
        'complexity': ['',Validators.required]          
     });
+
+    this.addNewOption();
   }
+
+  addNewOption(){
+    const formOptions = (this.formGroup.get('options') as FormArray);
+    formOptions.push(this.formBuilder.group({
+      option   : new FormControl({value: 'option', disabled: true}, Validators.required),
+      answer   : ['',    Validators.required],
+      isCorrect: [false, Validators.required]
+    }));
+  }
+
+  deleteOption(i:number){
+    const formOptions = (this.formGroup.get('options') as FormArray);
+    formOptions.removeAt(i);
+    if(formOptions.length===0){
+      this.addNewOption();
+    }
+  }
+  
+  setOptionValue(fa:FormArray, i:number){
+    fa.controls['option'].setValue('option '+(i+1));
+  }
+
 
   getError(el) {
     switch (el) {
@@ -100,6 +127,10 @@ export class QuestionAddComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  get optionsForm() {
+    return  (<FormArray>this.formGroup.get('options')).controls;
   }
 
 

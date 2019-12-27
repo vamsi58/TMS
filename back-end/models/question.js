@@ -9,7 +9,7 @@ const QuestionSchema = mongoose.Schema({
   text:            { type: String, minlength: 10, maxlength: 10000, required: true},
   textHtml:        { type: String, minlength: 10, maxlength: 15000},
   options:         { type: [AnswerOptionSchema], default: undefined,}, 
-  comment:          { type: String},
+  comment:         { type: String},
   status:          { type: String},
   complexity:      { type: String}, 
   createdBy:       { type:  String},

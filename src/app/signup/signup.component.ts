@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Subscription } from "rxjs";
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { AuthService } from "../services/auth.service";
 
@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.formGroup = this.formBuilder.group({
       'firstName': ['', Validators.required],
       'lastName': ['', Validators.required],
-      'email': ['', Validators.required],
+      'email': new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])),
       'password': ['', Validators.required],
       'phone': ['', Validators.required],
       'dob': ['', Validators.required],
@@ -64,6 +64,8 @@ export class SignupComponent implements OnInit, OnDestroy {
       case 'email':
         if (this.formGroup.get('email').hasError('required')) {
           return 'Email Required';
+        }else if (this.formGroup.get('email').hasError('pattern')){
+          return 'Invalid Email Address';
         }
         break;
       case 'password':

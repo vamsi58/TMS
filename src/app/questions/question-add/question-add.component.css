@@ -48,9 +48,22 @@
 margin-top: 1em;
 }
 
-.question-label{
+.answer-div{
+  margin-top: 2em;
+}
+
+.custom-label{
   margin-left: 8px;
   font-size: 12px;
+}
+
+.answer-group{
+  border: 1px solid #6a6a6a;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
