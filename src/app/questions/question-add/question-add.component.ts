@@ -3,6 +3,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { NgForm } from "@angular/forms";
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { QuestionService } from './../../services/question.service';
+import { MatTabChangeEvent,MatSliderChange } from '@angular/material';
 
 @Component({
   selector: 'app-question-add',
@@ -23,7 +24,7 @@ export class QuestionAddComponent implements OnInit {
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '10rem',
+    height: '6rem',
     minHeight: '5rem',
     minWidth: '15rem',
     placeholder: 'Enter text here...',
@@ -38,22 +39,17 @@ export class QuestionAddComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    
-    for (let option of this.optionsForm)
-    {
-       console.log((<FormGroup>option).controls);
-    }
   }
 
   createForm(){
     this.formGroup = this.formBuilder.group({
-       'type'      : ['',Validators.required],            
+       'type'      : ['Objective',Validators.required],            
        'category'  : ['',Validators.required],       
        'competency': ['',Validators.required],               
        'textHtml'  : ['',Validators.required],       
        'options'   : this.formBuilder.array([]),         
-       'comment'   : ['',Validators.required],                
-       'complexity': ['',Validators.required]          
+       'comment'   : [''],                
+       'complexity': ['medium',Validators.required]          
     });
 
     this.addNewOption();
@@ -64,7 +60,7 @@ export class QuestionAddComponent implements OnInit {
     formOptions.push(this.formBuilder.group({
       option   : new FormControl({value: 'option', disabled: true}, Validators.required),
       answer   : ['',    Validators.required],
-      isCorrect: [false, Validators.required]
+      isCorrect: [false]
     }));
   }
 
@@ -131,6 +127,14 @@ export class QuestionAddComponent implements OnInit {
 
   get optionsForm() {
     return  (<FormArray>this.formGroup.get('options')).controls;
+  }
+
+  onQuestionTypeChange(event: MatTabChangeEvent) {
+    this.formGroup.controls['type'].setValue(event.tab.textLabel);
+  }
+
+  onComplexityChange(event: MatSliderChange) {
+    this.formGroup.controls['complexity'].setValue(event.value);
   }
 
 

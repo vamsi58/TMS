@@ -11,6 +11,9 @@
 }
 .mat-toolbar {
   height: 2.5em;
+  position: sticky;
+  top: 0; 
+  z-index: 10; 
 }
 
 .mat-list-item, .mat-menu-item {
@@ -31,7 +34,6 @@ vertical-align: bottom;
   width: 100%;
   text-align: right;
   vertical-align: bottom;
- 
 }
 
  
