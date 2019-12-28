@@ -9,7 +9,7 @@
         <mat-icon>first_page</mat-icon> 
         Questions</button>
     </mat-card-header>
-    <mat-divider></mat-divider>
+    <mat-divider></mat-divider> 
     <mat-card-content>
       
       <form [formGroup]="formGroup" (ngSubmit)="onSignup(formGroup.value)" class="question-add-form">
@@ -52,17 +52,17 @@
         <div class="answer-editor"> 
         <mat-label class="custom-label">Answer</mat-label>
         <mat-tab-group animationDuration="1000ms" (selectedTabChange)="onQuestionTypeChange($event)">
-          <mat-tab label="Objective">
-            <div *ngIf="objectiveQuestion" class="answer-div">
-              
-              <div formArrayName="options" *ngFor="let option of formGroup.get('options').controls; let i=index" class="answer-group">
+          <mat-tab label="Objective" >
+            <div class="answer-group">
+              <div formArrayName="options" *ngFor="let option of formGroup.get('options').controls; let i=index"  fxLayout="row">
                 <div [formGroupName]="i">
                   {{ setOptionValue(option, i) }}
-                  <mat-form-field floatLabel="never" class="form-element form-element-option" appearance="outline">
+
+                  <mat-form-field floatLabel="never" class="form-elemnt-option" appearance="outline">
                     <input name="option" type="text" matInput placeholder="option" formControlName="option">
                   </mat-form-field>
     
-                  <mat-form-field floatLabel="never" class="form-element form-element-answer" appearance="outline">
+                  <mat-form-field floatLabel="never" class="form-elemnt-answer" appearance="outline">
                     <mat-label>answer</mat-label>
                     <input name="answer" type="text" matInput placeholder="Answer" formControlName="answer">
                     <mat-error *ngIf="option.controls['answer'].invalid">
@@ -70,16 +70,14 @@
                     </mat-error>
                   </mat-form-field>
     
-                  <mat-checkbox  formControlName="isCorrect">Correct Option?</mat-checkbox>
-    
-                  <button type="button" (click)="deleteOption(i)">X</button>
-    
+                  <mat-checkbox  formControlName="isCorrect" class="form-elemnt-correct">Correct Option?</mat-checkbox>
+                  <button type="button" mat-icon-button color="primary" calss = "form-elemnt-delete" (click)="deleteOption(i)"><mat-icon>close</mat-icon></button>
+                  <button *ngIf="formGroup.get('options').length==(i+1)" type="button" mat-icon-button color="primary" (click)="addNewOption()"><mat-icon>add</mat-icon></button>
                 </div>
               </div>
-              <button type="button" (click)="addNewOption()">add</button>
-    
+             
             </div>
-          </mat-tab>
+            </mat-tab>
           <mat-tab label="Descriptive">
             <mat-form-field class="descriptive-answer" class="form-element" appearance="outline">
               <textarea matInput placeholder="Write your solution here..."></textarea>

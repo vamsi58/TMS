@@ -63,13 +63,20 @@ margin-top: 1em;
 }
 
 .answer-group{
-  border: 1px  #6a6a6a;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   margin-top: 10px;
   margin-bottom: 10px;
-  display: flex;
+}
+
+.form-elemnt-option,
+.form-elemnt-answer,
+.form-elemnt-correct,
+.form-elemnt-delete
+{
+ margin-right:1em;
+}
+
+.form-elemnt-option{
+  width: 8em;
 }
 
 .descriptive-answer{
