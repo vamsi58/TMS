@@ -4,6 +4,7 @@ import { NgForm } from "@angular/forms";
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { QuestionService } from './../../services/question.service';
 import { MatTabChangeEvent,MatSliderChange } from '@angular/material';
+import { style } from '@angular/animations';
 
 @Component({
   selector: 'app-question-add',
@@ -24,10 +25,10 @@ export class QuestionAddComponent implements OnInit {
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '6rem',
-    minHeight: '5rem',
+    minHeight: '4rem',
     minWidth: '15rem',
-    placeholder: 'Enter text here...',
+    width: '70rem',
+    placeholder: 'Enter your question here...',
     translate: 'no', 
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
@@ -53,6 +54,7 @@ export class QuestionAddComponent implements OnInit {
     });
 
     this.addNewOption();
+    this.addNewOption();
   }
 
   addNewOption(){
@@ -68,6 +70,9 @@ export class QuestionAddComponent implements OnInit {
     const formOptions = (this.formGroup.get('options') as FormArray);
     formOptions.removeAt(i);
     if(formOptions.length===0){
+      this.addNewOption();
+      this.addNewOption();
+    }else if (formOptions.length===1){
       this.addNewOption();
     }
   }
