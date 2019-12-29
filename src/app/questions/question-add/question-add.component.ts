@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { NgForm } from "@angular/forms";
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl, 
+  ValidationErrors, ValidatorFn } from '@angular/forms';
 import { QuestionService } from './../../services/question.service';
 import { MatTabChangeEvent,MatSliderChange } from '@angular/material';
-import { style } from '@angular/animations';
+
 
 @Component({
   selector: 'app-question-add',
@@ -32,6 +32,7 @@ export class QuestionAddComponent implements OnInit {
     translate: 'no', 
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
+    outline: false,
     toolbarHiddenButtons: [
     ]
   };
@@ -44,13 +45,13 @@ export class QuestionAddComponent implements OnInit {
 
   createForm(){
     this.formGroup = this.formBuilder.group({
-       'type'      : ['Objective',Validators.required],            
+       'type'      : ['Objective'],            
        'category'  : ['',Validators.required],       
        'competency': ['',Validators.required],               
        'textHtml'  : ['',Validators.required],       
        'options'   : this.formBuilder.array([]),         
        'comment'   : [''],                
-       'complexity': ['medium',Validators.required]          
+       'complexity': ['medium']          
     });
 
     this.addNewOption();
@@ -60,7 +61,7 @@ export class QuestionAddComponent implements OnInit {
   addNewOption(){
     const formOptions = (this.formGroup.get('options') as FormArray);
     formOptions.push(this.formBuilder.group({
-      option   : new FormControl({value: 'option', disabled: true}, Validators.required),
+      option   : new FormControl({value: 'option', disabled: true}),
       answer   : ['',    Validators.required],
       isCorrect: [false]
     }));
@@ -84,11 +85,6 @@ export class QuestionAddComponent implements OnInit {
 
   getError(el) {
     switch (el) {
-      case 'type':
-        if (this.formGroup.get('type').hasError('required')) {
-          return 'Question Type Required';
-        }
-        break;
       case 'category':
         if (this.formGroup.get('category').hasError('required')) {
           return 'Question Category Required';
@@ -101,6 +97,7 @@ export class QuestionAddComponent implements OnInit {
         break;
       case 'textHtml':
         if (this.formGroup.get('textHtml').hasError('required')) {
+          console.log("Question Required");
           return 'Question Required';
         }
         break;
@@ -144,3 +141,15 @@ export class QuestionAddComponent implements OnInit {
 
 
 }
+
+class AngularEditorValidator {
+  static required(): ValidatorFn {
+    return (currentControl: AbstractControl): ValidationErrors|null => {
+      if (currentControl.value === '<br>') {
+        return {required: true};
+      }
+      return null;
+    };
+  }
+}
+

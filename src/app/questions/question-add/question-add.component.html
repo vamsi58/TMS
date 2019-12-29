@@ -45,20 +45,21 @@
 
         <div class="question-editor">
           <mat-label class="custom-label">Question</mat-label>
-          <angular-editor [config]="config" formControlName="textHtml"></angular-editor>
+          <angular-editor class="question-textArea"  [config]="config" formControlName="textHtml"></angular-editor>
+          <mat-error *ngIf="!formGroup.controls['textHtml'].valid && (formGroup.controls['textHtml'].dirty || formGroup.controls['textHtml'].touched)">
+            {{getError('textHtml')}}
+          </mat-error>
         </div>
-
-        
+ 
         <div class="answer-editor"> 
         <mat-divider></mat-divider>
         <mat-label class="custom-label">Answer</mat-label>
         <mat-tab-group animationDuration="1000ms" (selectedTabChange)="onQuestionTypeChange($event)">
-          <mat-tab label="Objective" >
+          <mat-tab label="Objective">
             <div class="answer-group">
               <div formArrayName="options" *ngFor="let option of formGroup.get('options').controls; let i=index">
                 <div [formGroupName]="i">
                   {{ setOptionValue(option, i) }}
-
                 <div class="choice-div">
                   <mat-form-field floatLabel="never" class="form-element-option" appearance="standard">
                     <input name="option" type="text" matInput placeholder="option" formControlName="option">
@@ -89,7 +90,7 @@
           </div>
           </mat-tab>
         </mat-tab-group>
-      </div>
+        </div>
         
         <div class="form-element" appearance="outline">
           <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Create</button>

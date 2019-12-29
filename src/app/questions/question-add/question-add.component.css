@@ -60,7 +60,7 @@ width: 70rem;
 
 .custom-label{
   margin-left: 8px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .answer-group{
@@ -108,7 +108,6 @@ width: 70rem;
 
 ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
 ::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
-
 
 
 
