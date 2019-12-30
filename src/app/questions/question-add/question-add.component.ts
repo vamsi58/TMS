@@ -27,7 +27,6 @@ export class QuestionAddComponent implements OnInit {
     spellcheck: true,
     minHeight: '4rem',
     minWidth: '15rem',
-    width: '70rem',
     placeholder: 'Enter your question here...',
     translate: 'no', 
     defaultParagraphSeparator: 'p',
@@ -97,15 +96,13 @@ export class QuestionAddComponent implements OnInit {
         break;
       case 'textHtml':
         if (this.formGroup.get('textHtml').hasError('required')) {
-          console.log("Question Required");
           return 'Question Required';
         }
         break;
     
-      case 'options':
-        if (this.formGroup.get('options').hasError('required')) {
+      case 'answer':
           return 'Answer Required';
-        }
+        
         break;
       case 'comment':
           if (this.formGroup.get('comment').hasError('required')) {

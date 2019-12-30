@@ -1,4 +1,3 @@
-
 .question-add-div {
   margin-top: 1em;
   display: flex;
@@ -33,6 +32,10 @@ margin-left: 1em;
   margin-bottom: .75em;
 }
 
+.ques-err{
+  font-size: 11px;
+}
+
 .control-layout{
   margin-top: 2em;
 } 
@@ -51,7 +54,7 @@ margin-left: 1em;
 
 .question-editor, .answer-editor{
 margin-top: 2em;
-width: 70rem;
+max-width: 70rem;
 }
 
 .answer-div{
@@ -78,7 +81,7 @@ width: 70rem;
 }
 
 .form-element-option{
-  width: 8em;
+  max-width: 6em;
 }
 
 .form-element-answer{
@@ -87,14 +90,12 @@ width: 70rem;
 }
 
 .descriptive-answer{
-  width: 100%;
-  height: 12em;
-  width: 70rem;
+  width:100%;
 }
 
 .choice-div {
   display: inline-block;
-  width: 65rem;
+  width: 80%;
 }
 
 .add-button{
