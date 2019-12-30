@@ -10,8 +10,10 @@ const router = express.Router();
 
 //Insert record
 router.post("/add", (req, res, next) => {
-  const question = new Question({
-    _id: getNextSequence("question_id"),
+  let question;
+  Counter.getNextSequence("question_id", function(sequence){
+  question = new Question({
+    _id: sequence,
     type: req.body.type,
     category: req.body.category,
     competency: req.body.competency,
@@ -25,6 +27,7 @@ router.post("/add", (req, res, next) => {
     updatedBy: req.body.updatedBy,
     approvedBy: req.body.approvedBy
   });
+
   question
     .save()
     .then(result => {
@@ -34,10 +37,12 @@ router.post("/add", (req, res, next) => {
       });
     })
     .catch(err => {
+      console.log("Invalid Here!" + err);
       res.status(500).json({
         message: "Invalid Here!" + err
       });
     });
+  });
 });
 
 //View all records

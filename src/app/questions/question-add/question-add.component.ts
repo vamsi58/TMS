@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators, AbstractControl, 
-  ValidationErrors, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { QuestionService } from './../../services/question.service';
 import { MatTabChangeEvent,MatSliderChange } from '@angular/material';
+import { NgForm } from "@angular/forms";
+import { AuthService } from "./../../services/auth.service";
 
 
 @Component({
@@ -36,7 +37,8 @@ export class QuestionAddComponent implements OnInit {
     ]
   };
   
-  constructor(private formBuilder: FormBuilder, public questionService: QuestionService) { }
+  constructor(private formBuilder: FormBuilder, public questionService: QuestionService,
+    private userData: AuthService) { }
 
   ngOnInit() {
     this.createForm();
@@ -137,16 +139,16 @@ export class QuestionAddComponent implements OnInit {
   }
 
 
+  onCreate(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
+    let currentUser = this.userData.getCurrentUserName();
+    let questionText = (this.formGroup.get('textHtml').value).replace(/<[^>]*>/g, '');
+    this.questionService.createQuestion('dummyid', this.formGroup.get('type').value, this.formGroup.get('category').value, this.formGroup.get('competency').value, questionText, this.formGroup.get('textHtml').value, this.formGroup.get('options').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
+  }
+
+
 }
 
-class AngularEditorValidator {
-  static required(): ValidatorFn {
-    return (currentControl: AbstractControl): ValidationErrors|null => {
-      if (currentControl.value === '<br>') {
-        return {required: true};
-      }
-      return null;
-    };
-  }
-}
 

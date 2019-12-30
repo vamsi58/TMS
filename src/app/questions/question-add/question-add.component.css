@@ -1,3 +1,4 @@
+
 .question-add-div {
   margin-top: 1em;
   display: flex;
@@ -48,8 +49,13 @@ margin-left: 1em;
 }
 
 .form-element-complexity{
-  width: 13em;
-  height: 3em;
+  width: 180px;
+  height: 40px;
+}
+
+.mat-button-toggle-checked {
+  background-color:#3F51B5;
+  color: #ffffff;
 }
 
 .question-editor, .answer-editor{
@@ -80,6 +86,10 @@ max-width: 70rem;
  padding-bottom: 0em;
 }
 
+.form-element-answer{
+  margin-bottom: 4em;
+}
+
 .form-element-option{
   max-width: 6em;
 }
@@ -96,10 +106,14 @@ max-width: 70rem;
 .choice-div {
   display: inline-block;
   width: 80%;
+  border-style:ridge;
+  border-width:thin;
+  margin-bottom: 1em;
 }
 
 .add-button{
   margin-bottom: 0em;
+  margin-left: 3em;
 }
 
 .delete-icon, .add-icon{

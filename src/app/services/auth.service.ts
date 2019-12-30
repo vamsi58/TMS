@@ -13,6 +13,7 @@ export class AuthService {
   private tokenTimer: any;
   private userId: string;
   private authStatusListener = new Subject<boolean>();
+  private currentUserName;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -32,6 +33,10 @@ export class AuthService {
     return this.authStatusListener.asObservable();
   }
 
+  getCurrentUserName() {
+    return this.currentUserName;
+  }
+
   createUser(firstName: string, lastName: string, email: string, phone:number, password: string,  dob: Date, roles:string[], groups:string[]) {
     const signupData: SignupModel = { firstName: firstName, lastName:lastName, dob: dob,  email: email, phone: phone, password: password, roles:roles, groups: groups };
     this.http
@@ -46,7 +51,7 @@ export class AuthService {
   signin(email: string, password: string) {
     const signinData: SigninModel = { email: email, password: password };
     this.http
-      .post<{ token: string; expiresIn: number; userId: string }>(
+      .post<{ token: string; expiresIn: number; userId: string, firstName:string, lastName: string }>(
         "http://localhost:3000/api/user/signin",
         signinData
       )
@@ -58,6 +63,7 @@ export class AuthService {
           this.setAuthTimer(expiresInDuration);
           this.isAuthenticated = true;
           this.userId = response.userId;
+          this.currentUserName = response.firstName +" "+ response.lastName;
           this.authStatusListener.next(true);
           const now = new Date();
           const expirationDate = new Date(

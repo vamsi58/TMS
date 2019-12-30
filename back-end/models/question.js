@@ -3,6 +3,7 @@ const uniqueValidator = require("mongoose-unique-validator");
 const AnswerOptionSchema = require("./answer");
 
 const QuestionSchema = mongoose.Schema({
+  _id:             { type: String},
   type:            { type: String},
   category:        { type: String},
   competency:      { type: String},
