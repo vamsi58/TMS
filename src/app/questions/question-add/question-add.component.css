@@ -41,8 +41,8 @@ margin-left: 1em;
   margin-top: 2em;
 } 
 
-.form-element-category, 
-.form-element-competency
+.form-element-tags, 
+.form-element-skills
 {
   max-width: 20em;
   min-width: 10em;

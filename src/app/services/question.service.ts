@@ -31,8 +31,8 @@ export class QuestionService {
   }
 
   //Add Question
-  createQuestion(dummyId: string, type: string, category: string, competency: string, text: string, textHtml: string, options: Answer[], comment: string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
-    const Question: Question = { id: dummyId, type: type, category: category, competency: competency, text: text, textHtml: textHtml, options: options, comment: comment, status: status, complexity:complexity, createdBy:createdBy, updatedBy:updatedBy, approvedBy:approvedBy };
+  createQuestion(dummyId: string, type: string, tags: string, skills: string, stmt: string, stmtHtml: string, options: Answer[], descAnswer: string, comment: string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
+    const Question: Question = { id: dummyId, type: type, tags: tags, skills: skills, stmt: stmt, stmtHtml: stmtHtml, options: options, descAnswer: descAnswer, comment: comment, status: status, complexity:complexity, createdBy:createdBy, updatedBy:updatedBy, approvedBy:approvedBy };
 
 
     this.http
@@ -62,11 +62,12 @@ export class QuestionService {
               return {
                 id: question._id,
                 type: question.type,
-                category: question.category,
-                competency: question.competency,
-                text: question.text,
-                textHtml: question.textHtml,
+                tags: question.tags,
+                skills: question.skills,
+                stmt: question.stmt,
+                stmtHtml: question.stmtHtml,
                 options: question.options,
+                descAnswer: question.descAnswer,
                 comment: question.comment,
                 status: question.status,
                 complexity: question.complexity,
@@ -94,8 +95,8 @@ export class QuestionService {
   }
 
   //Update Question
-  updateQuestion(id: string, type: string, category: string, competency: string, text: string, textHtml: string, options: Answer[], comment: string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
-    const questionUpdateData: Question = { id: id, type: type, category: category, competency: competency, text: text, textHtml: textHtml, options: options, comment: comment, status: status, complexity:complexity, createdBy:createdBy, updatedBy:updatedBy, approvedBy:approvedBy };
+  updateQuestion(id: string, type: string, tags: string, skills: string, stmt: string, stmtHtml: string, options: Answer[], descAnswer: string, comment:string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
+    const questionUpdateData: Question = { id: id, type: type, tags: tags, skills: skills, stmt: stmt, stmtHtml: stmtHtml, options: options, descAnswer: descAnswer, comment: comment, status: status, complexity:complexity, createdBy:createdBy, updatedBy:updatedBy, approvedBy:approvedBy };
 
     console.log(questionUpdateData);
      this.http

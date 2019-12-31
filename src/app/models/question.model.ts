@@ -3,11 +3,12 @@ import {Answer} from './answer.model';
 export interface Question {
   id : string;
   type: string;
-  category: string;
-  competency: string;
-  text: string;
-  textHtml: string;
+  tags: string[];
+  skills: string[];
+  stmt: string;
+  stmtHtml: string;
   options: Answer[];
+  descAnswer: string;
   comment: string;
   status: string;
   complexity: string;

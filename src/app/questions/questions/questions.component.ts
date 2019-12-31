@@ -32,7 +32,7 @@ export class QuestionsComponent implements OnInit {
   private filteredCats: string[];
   private filteredSubcats: string[];
   questions: Question[] = [];
-  displayedColumns = ['select','id', 'type', 'category','competency', 'text','actions' ];
+  displayedColumns = ['select','id', 'type', 'tags','skills', 'stmt','actions' ];
   dataSource = new MatTableDataSource<Question>(this.questions);
   selection = new SelectionModel<Question>(true, []);
 

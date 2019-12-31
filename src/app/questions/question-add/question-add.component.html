@@ -14,24 +14,24 @@
     <mat-card-content>
       <form [formGroup]="formGroup" (ngSubmit)="onCreate(formGroup.value)" class="question-add-form">
         <div fxLayout="column" class="control-layout">
-          <mat-label class="custom-label">Category</mat-label>
-          <mat-form-field floatLabel="always" class="form-element form-element-category" appearance="outline">
-            <mat-select name="category" placeholder="Select Question Category" formControlName="category">
-              <mat-option *ngFor="let category of Category; let i = index" [value]="category"
-                (change)="selectType($event)">{{category}}</mat-option>
+          <mat-label class="custom-label">tags</mat-label>
+          <mat-form-field floatLabel="always" class="form-element form-element-tags" appearance="outline">
+            <mat-select name="tags" placeholder="Select Question tags" formControlName="tags">
+              <mat-option *ngFor="let tags of tags; let i = index" [value]="tags"
+                (change)="selectType($event)">{{tags}}</mat-option>
             </mat-select>
-            <mat-error *ngIf="!formGroup.controls['category'].valid">
-              {{getError('category')}}
+            <mat-error *ngIf="!formGroup.controls['tags'].valid">
+              {{getError('tags')}}
             </mat-error>
           </mat-form-field>
-          <mat-label class="custom-label">Competency</mat-label>
-          <mat-form-field floatLabel="always" class="form-element form-element-competency" appearance="outline">
-            <mat-select name="competency" placeholder="Select Question Competency" formControlName="competency">
-              <mat-option *ngFor="let competency of Competency; let i = index" [value]="competency"
-                (change)="selectType($event)">{{competency}}</mat-option>
+          <mat-label class="custom-label">skills</mat-label>
+          <mat-form-field floatLabel="always" class="form-element form-element-skills" appearance="outline">
+            <mat-select name="skills" placeholder="Select Question skills" formControlName="skills">
+              <mat-option *ngFor="let skills of skills; let i = index" [value]="skills"
+                (change)="selectType($event)">{{skills}}</mat-option>
             </mat-select>
-            <mat-error *ngIf="!formGroup.controls['competency'].valid">
-              {{getError('competency')}}
+            <mat-error *ngIf="!formGroup.controls['skills'].valid">
+              {{getError('skills')}}
             </mat-error>
           </mat-form-field>
           <mat-label class="custom-label" color="primary">Complexity</mat-label>
@@ -44,10 +44,10 @@
         </div>
         <div class="question-editor">
           <mat-label class="custom-label">Question</mat-label>
-          <angular-editor class="question-textArea" [config]="config" formControlName="textHtml"></angular-editor>
+          <angular-editor class="question-textArea" [config]="config" formControlName="stmtHtml"></angular-editor>
           <mat-error class="ques-err"
-            *ngIf="!formGroup.controls['textHtml'].valid && (formGroup.controls['textHtml'].dirty || formGroup.controls['textHtml'].touched)">
-            {{getError('textHtml')}}
+            *ngIf="!formGroup.controls['stmtHtml'].valid && (formGroup.controls['stmtHtml'].dirty || formGroup.controls['stmtHtml'].touched)">
+            {{getError('stmtHtml')}}
           </mat-error>
         </div>
         <div class="answer-editor">
