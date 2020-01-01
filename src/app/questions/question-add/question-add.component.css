@@ -91,21 +91,28 @@ max-width: 70rem;
 }
 
 .form-element-option{
-  max-width: 6em;
+  max-width: 4em;
+  margin-left:1em;
 }
 
 .form-element-answer{
-  width: 60%;
+  width: 30%;
   height: 1em;
 }
 
-.descriptive-answer{
+.descriptive-answer,
+.answer-explantion
+{
   width:100%;
 }
 
+.oneword-answer{
+  width:15em;
+}
+
 .choice-div {
-  display: inline-block;
-  width: 80%;
+  /* display: inline-block;
+  width: 80%; */
   border-style:ridge;
   border-width:thin;
   margin-bottom: 1em;

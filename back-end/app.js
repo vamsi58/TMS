@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 
 const userRoutes = require("./api/user");
 const questionRoutes = require("./api/question");
+const tagRoutes = require("./api/tag");
+const skillRoutes = require("./api/skill");
 
 
 const server = 'localhost:27017'; // Localhost:Default Port
@@ -44,8 +46,7 @@ app.use((req, res, next) => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/question", questionRoutes);
-//app.use("/api/questiontype", questiontypeRoutes);
-//app.use("/api/competencearea", competenceareaRoutes);
-//app.use("/api/course", courseRoutes);
+app.use("/api/skill", skillRoutes);
+app.use("/api/tag", tagRoutes);
 
 module.exports = app;

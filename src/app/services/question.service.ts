@@ -31,7 +31,7 @@ export class QuestionService {
   }
 
   //Add Question
-  createQuestion(dummyId: string, type: string, tags: string, skills: string, stmt: string, stmtHtml: string, options: Answer[], descAnswer: string, comment: string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
+  createQuestion(dummyId: string, type: string, tags: string[], skills: string[], stmt: string, stmtHtml: string, options: Answer[], descAnswer: string, comment: string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
     const Question: Question = { id: dummyId, type: type, tags: tags, skills: skills, stmt: stmt, stmtHtml: stmtHtml, options: options, descAnswer: descAnswer, comment: comment, status: status, complexity:complexity, createdBy:createdBy, updatedBy:updatedBy, approvedBy:approvedBy };
 
 
@@ -95,7 +95,7 @@ export class QuestionService {
   }
 
   //Update Question
-  updateQuestion(id: string, type: string, tags: string, skills: string, stmt: string, stmtHtml: string, options: Answer[], descAnswer: string, comment:string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
+  updateQuestion(id: string, type: string, tags: string[], skills: string[], stmt: string, stmtHtml: string, options: Answer[], descAnswer: string, comment:string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
     const questionUpdateData: Question = { id: id, type: type, tags: tags, skills: skills, stmt: stmt, stmtHtml: stmtHtml, options: options, descAnswer: descAnswer, comment: comment, status: status, complexity:complexity, createdBy:createdBy, updatedBy:updatedBy, approvedBy:approvedBy };
 
     console.log(questionUpdateData);

@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { QuestionService } from './../../services/question.service';
+import { SkillService } from './../../services/skill.service';
+import { TagService } from './../../services/tag.service';
 import { MatTabChangeEvent, MatSliderChange } from '@angular/material';
 import { NgForm } from "@angular/forms";
 import { AuthService } from "./../../services/auth.service";
+import { Tag } from './../../models/tag.model';
+import { Skill } from './../../models/skill.model';
 
 
 @Component({
@@ -16,11 +20,12 @@ export class QuestionAddComponent implements OnInit {
 
   formGroup: FormGroup;
   public value: string = 'test text test';
-  Type = ['Objective', 'Descriptive'];
-  tags = ['Technical', 'Functional'];
-  skills = ['IBM i', 'Java', 'Angular'];
+  // tags = ['Technical', 'Functional'];
+  // skills = ['IBM i', 'Java', 'Angular'];
+  skills: Skill[] = [];
+  tags: Tag[] = [];
   Complexity = ['High', 'Medium', 'Low'];
-  objectiveQuestion = true;
+  questionType = "MCQ Single";
 
   config: AngularEditorConfig = {
     editable: true,
@@ -37,20 +42,22 @@ export class QuestionAddComponent implements OnInit {
   };
 
   constructor(private formBuilder: FormBuilder, public questionService: QuestionService,
-    private userData: AuthService) { }
+    private userData: AuthService, private tagService: TagService, private skillService: SkillService) { }
 
   ngOnInit() {
+    this.loadSkills();
+    this.loadTags();
     this.createForm();
   }
 
   createForm() {
     this.formGroup = this.formBuilder.group({
       'type': ['Objective'],
-      'tags': ['', Validators.required],
-      'skills': ['', Validators.required],
+      'tags': ['', [Validators.required]],
+      'skills': ['', [Validators.required]],
       'stmtHtml': ['', Validators.required],
       'options': this.formBuilder.array([]),
-      'descAnswer': [''],
+      'descAnswer': ['a', Validators.required],
       'comment': [''],
       'complexity': ['medium']
     });
@@ -88,12 +95,12 @@ export class QuestionAddComponent implements OnInit {
     switch (el) {
       case 'tags':
         if (this.formGroup.get('tags').hasError('required')) {
-          return 'Question tags Required';
+          return 'Tags Required';
         }
         break;
       case 'skills':
         if (this.formGroup.get('skills').hasError('required')) {
-          return 'skills Required';
+          return 'Skills Required';
         }
         break;
       case 'stmtHtml':
@@ -111,6 +118,11 @@ export class QuestionAddComponent implements OnInit {
           return 'Desciptive Answer Required';
         }
         break;
+      case 'onewordAnswer':
+          if (this.formGroup.get('descAnswer').hasError('required')) {
+            return 'One Word Answer Required';
+          }
+          break;
       case 'comment':
         if (this.formGroup.get('comment').hasError('required')) {
           return 'Explanation Required';
@@ -135,8 +147,26 @@ export class QuestionAddComponent implements OnInit {
     return (<FormArray>this.formGroup.get('options')).controls;
   }
 
+  clearOptions() {
+    const formOptions = (this.formGroup.get('options') as FormArray);
+    while (formOptions.length !== 0) {
+      formOptions.removeAt(0)
+    }
+  }
+
   onQuestionTypeChange(event: MatTabChangeEvent) {
     this.formGroup.controls['type'].setValue(event.tab.textLabel);
+    this.questionType = event.tab.textLabel;
+    this.clearOptions();
+    var re = /MCQ/gi;
+    if (this.questionType.search(re) !== -1) {
+      this.addNewOption();
+      this.addNewOption();
+    } else {
+      this.formGroup.get('descAnswer').reset();
+      this.formGroup.get('descAnswer').setValue('');
+    }
+    console.log(this.formGroup);
   }
 
   onComplexityChange(event: MatSliderChange) {
@@ -151,9 +181,24 @@ export class QuestionAddComponent implements OnInit {
     let currentUser = this.userData.getCurrentUserName();
     let questionText = (this.formGroup.get('stmtHtml').value).replace(/<[^>]*>/g, '');
     this.questionService.createQuestion('dummyid', this.formGroup.get('type').value, this.formGroup.get('tags').value, this.formGroup.get('skills').value, questionText, this.formGroup.get('stmtHtml').value, this.formGroup.get('options').value,
-    this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
+      this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
   }
 
+
+  loadSkills(){
+    this.skillService
+      .getSkillUpdateListener()
+      .subscribe((skillData: { skills: Skill[]; }) => {
+        this.skills = skillData.skills;
+      }); 
+  }
+  loadTags(){
+    this.tagService
+      .getTagUpdateListener()
+      .subscribe((tagData: { tags: Tag[]; }) => {
+        this.tags = tagData.tags;
+      }); 
+  }
 
 }
 

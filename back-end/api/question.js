@@ -38,7 +38,6 @@ router.post("/add", (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log("Invalid Here!" + err);
       res.status(500).json({
         message: "Invalid Here!" + err
       });
@@ -53,7 +52,6 @@ router.get("/view", (req, res, next) => {
   const filteredType = req.query.Type;
   var filteredCats = req.query.Cat;
   var filteredSubCats = req.query.SubCat;
-  console.log("inside view all api"); 
 
   var quesQuery;
   var whrCondition = {};
@@ -87,20 +85,16 @@ router.get("/view", (req, res, next) => {
 router.delete("/delete/:id", checkAuth, (req, res, next) => {
   Question.deleteOne({ _id: req.params.id })
     .then(result => {
-      console.log(result);
       if (result.n > 0) {
         res.status(200).json({ message: "Deletion successful!" });
       } else {
-        Console.log(result.error);
         res.status(401).json({ message: "Not authorized!" });
 
       }
     })
     .catch(error => {
-      console.log(error);
       res.status(500).json({
-        message: "Fetching posts failed!"
-
+        message: "Question Delete failed!"
       });
     });
 });
@@ -108,9 +102,9 @@ router.delete("/delete/:id", checkAuth, (req, res, next) => {
 //View record by Id
 router.get("/getQuestion/:id", (req, res, next) => {
   Question.findById(req.params.id)
-    .then(post => {
-      if (post) {
-        res.status(200).json(post);
+    .then(question => {
+      if (question) {
+        res.status(200).json(question);
       } else {
         res.status(404).json({ message: "Question not found!" });
       }
@@ -151,7 +145,7 @@ router.put("/update/:id", checkAuth, (req, res, next) => {
     })
     .catch(error => {
       res.status(500).json({
-        message: "Couldn't udpate post!" + error
+        message: "Couldn't udpate Question!" + error
       });
     });
 }
