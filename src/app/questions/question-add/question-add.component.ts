@@ -1,3 +1,4 @@
+import { DropdownValue } from './../../models/dropdown.model';
 import { Component, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
@@ -11,6 +12,7 @@ import { Tag } from './../../models/tag.model';
 import { Skill } from './../../models/skill.model';
 
 
+
 @Component({
   selector: 'app-question-add',
   templateUrl: './question-add.component.html',
@@ -22,6 +24,9 @@ export class QuestionAddComponent implements OnInit {
   public value: string = 'test text test';
   // tags = ['Technical', 'Functional'];
   // skills = ['IBM i', 'Java', 'Angular'];
+  tagNames: string[] = ['Technical', 'Functional'];
+  dropdownTags: DropdownValue[] = [];
+  // dropdownTags = [{'Technical' 'Functional'}];
   skills: Skill[] = [];
   tags: Tag[] = [];
   Complexity = ['High', 'Medium', 'Low'];
@@ -48,12 +53,14 @@ export class QuestionAddComponent implements OnInit {
     this.loadSkills();
     this.loadTags();
     this.createForm();
+    this.dropdownTags['value'] = this.tagNames;
+    this.dropdownTags['labels'] = ['Tags'];
   }
 
   createForm() {
     this.formGroup = this.formBuilder.group({
       'type': ['Objective'],
-      'tags': ['', [Validators.required]],
+      'tags': new FormControl('', Validators.required),
       'skills': ['', [Validators.required]],
       'stmtHtml': ['', Validators.required],
       'options': this.formBuilder.array([]),
@@ -166,11 +173,14 @@ export class QuestionAddComponent implements OnInit {
       this.formGroup.get('descAnswer').reset();
       this.formGroup.get('descAnswer').setValue('');
     }
-    console.log(this.formGroup);
   }
 
   onComplexityChange(event: MatSliderChange) {
     this.formGroup.controls['complexity'].setValue(event.value);
+  }
+
+  onTagSelected(data){
+    this.formGroup.get('tags').setValue(data);
   }
 
 

@@ -64,6 +64,7 @@ import {
 } from '@angular/material';
 import { QuestionsComponent } from './questions/questions/questions.component';
 import { QuestionAddComponent } from './questions/question-add/question-add.component';
+import { CustomDropdownComponent } from './custom-dropdown/custom-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { QuestionAddComponent } from './questions/question-add/question-add.comp
     NavbarComponent,
     HomeComponent,
     QuestionsComponent,
-    QuestionAddComponent
+    QuestionAddComponent,
+    CustomDropdownComponent
   ],
   imports: [
     BrowserModule,
