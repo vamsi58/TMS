@@ -8,6 +8,16 @@
 }
 
 .form-element {
-  max-width: 80%;
-  margin-bottom: .75em;
+  max-width: 25em;
+  /* margin-bottom: .50em; */
+}
+.form-element-input{
+  height: 2.3em;
+}
+
+.mat-chip{
+  border-radius: 2px !important;
+  font-size: 12px;
+  padding: 1px 8px !important;
+  margin: 0px 0px 0px 0px;
 }

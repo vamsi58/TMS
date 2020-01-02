@@ -1,4 +1,3 @@
-import { DropdownValue } from './../../models/dropdown.model';
 import { Component, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
@@ -12,7 +11,6 @@ import { Tag } from './../../models/tag.model';
 import { Skill } from './../../models/skill.model';
 
 
-
 @Component({
   selector: 'app-question-add',
   templateUrl: './question-add.component.html',
@@ -22,11 +20,10 @@ export class QuestionAddComponent implements OnInit {
 
   formGroup: FormGroup;
   public value: string = 'test text test';
-  // tags = ['Technical', 'Functional'];
-  // skills = ['IBM i', 'Java', 'Angular'];
-  tagNames: string[] = ['Technical', 'Functional'];
-  dropdownTags: DropdownValue[] = [];
-  // dropdownTags = [{'Technical' 'Functional'}];
+  dropdownTags: string[] = [];
+  selectedTags: string[] = [];
+  dropdownSkills: string[] = [];
+  selectedSkills: string[] = [];
   skills: Skill[] = [];
   tags: Tag[] = [];
   Complexity = ['High', 'Medium', 'Low'];
@@ -50,11 +47,9 @@ export class QuestionAddComponent implements OnInit {
     private userData: AuthService, private tagService: TagService, private skillService: SkillService) { }
 
   ngOnInit() {
-    this.loadSkills();
     this.loadTags();
+    this.loadSkills();
     this.createForm();
-    this.dropdownTags['value'] = this.tagNames;
-    this.dropdownTags['labels'] = ['Tags'];
   }
 
   createForm() {
@@ -179,8 +174,14 @@ export class QuestionAddComponent implements OnInit {
     this.formGroup.controls['complexity'].setValue(event.value);
   }
 
-  onTagSelected(data){
+  onTagSelected(data:any){
     this.formGroup.get('tags').setValue(data);
+    this.selectedTags = data;
+  }
+
+  onSkillSelected(data:any){
+    this.formGroup.get('skills').setValue(data);
+    this.selectedSkills = data;
   }
 
 
@@ -190,26 +191,46 @@ export class QuestionAddComponent implements OnInit {
     }
     let currentUser = this.userData.getCurrentUserName();
     let questionText = (this.formGroup.get('stmtHtml').value).replace(/<[^>]*>/g, '');
+    this.addNewItems();
     this.questionService.createQuestion('dummyid', this.formGroup.get('type').value, this.formGroup.get('tags').value, this.formGroup.get('skills').value, questionText, this.formGroup.get('stmtHtml').value, this.formGroup.get('options').value,
-      this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
+    this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
   }
 
 
   loadSkills(){
+    this.skillService.getSkills();
     this.skillService
       .getSkillUpdateListener()
       .subscribe((skillData: { skills: Skill[]; }) => {
         this.skills = skillData.skills;
+        this.dropdownSkills = this.skills.map(a => a.skillName);
       }); 
   }
+
   loadTags(){
+    this.tagService.getTags();
     this.tagService
       .getTagUpdateListener()
       .subscribe((tagData: { tags: Tag[]; }) => {
         this.tags = tagData.tags;
+        this.dropdownTags = this.tags.map(a => a.tagName);
       }); 
+     
   }
 
+  addNewItems(){
+    this.selectedSkills.forEach(element => {
+      if (this.dropdownSkills.indexOf(element) < 0){
+        this.skillService.createSkill(element);
+      }
+    });
+
+  this.selectedTags.forEach(element => {
+    if (this.dropdownTags.indexOf(element) < 0){
+      this.tagService.createTag(element);
+    }
+  });
+}
 }
 
 

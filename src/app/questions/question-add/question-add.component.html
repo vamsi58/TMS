@@ -14,31 +14,11 @@
     <mat-card-content>
       <form [formGroup]="formGroup" (ngSubmit)="onCreate(formGroup.value)" class="question-add-form">
         <div fxLayout="column" class="control-layout">
-          <!--<mat-label class="custom-label">Select Tags</mat-label>
-          <mat-form-field floatLabel="always" class="form-element form-element-tags" appearance="outline">
-            <mat-select multiple name="tags" placeholder="Select existing tags or add new tags" formControlName="tags">
-              <mat-option *ngFor="let tag of tags; let i = index" [value]="tag" (change)="selectType($event)">{{tag}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="!formGroup.controls['tags'].valid">
-              {{getError('tags')}}
-            </mat-error>
-          </mat-form-field>-->
-          <custom-dropdown [values]="dropdownTags" [formGroup]="formGroup" (select)="onTagSelected($event)"></custom-dropdown>
-          <mat-label class="custom-label">Select Skills</mat-label>
-          <mat-form-field floatLabel="always" class="form-element form-element-skills" appearance="outline">
-            <mat-select multiple name="skills" placeholder="Select existing skills or add new skills"
-              formControlName="skills">
-              <mat-option [value]="skill" (change)="selectType($event)">
-                <input type="text" placeholder="Write your own">
-              </mat-option>
-              <mat-option *ngFor="let skill of skills; let i = index" [value]="skill" (change)="selectType($event)">
-                {{skill}}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="!formGroup.controls['skills'].valid">
-              {{getError('skills')}}
-            </mat-error>
-          </mat-form-field>
+          
+          <custom-dropdown [values]="dropdownTags"  [label]="'Tags'" [formGroup]="formGroup" (select)="onTagSelected($event)"></custom-dropdown>
+          
+          <custom-dropdown [values]="dropdownSkills" [label]="'Skills'" (select)="onSkillSelected($event)"></custom-dropdown>
+          
           <mat-label class="custom-label" color="primary">Select Complexity</mat-label>
           <mat-button-toggle-group name="complexity" class="form-element form-element-complexity" value="medium"
             (change)="onComplexityChange($event)">
@@ -46,6 +26,7 @@
             <mat-button-toggle value="medium">Medium</mat-button-toggle>
             <mat-button-toggle value="high">High</mat-button-toggle>
           </mat-button-toggle-group>
+        
         </div>
         <div class="question-editor">
           <mat-label class="custom-label">Question</mat-label>

@@ -1,11 +1,11 @@
-import { DropdownValue } from './../models/dropdown.model';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Component, ElementRef, ViewChild, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { COMMA, ENTER, I } from '@angular/cdk/keycodes';
+import { Component, ElementRef, ViewChild, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+
 
 
 
@@ -23,40 +23,37 @@ export class CustomDropdownComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   itemCtrl = new FormControl();
   filteredItems: Observable<string[]>;
-  //items: string[] = ['Lemon'];
-  //allItems: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
   allItems: string[] = [];
   items: string[] = [];
-  label: string = ' ';
   formControlDropdown = new FormControl('', Validators.required);
 
   @Input()
-  values: DropdownValue[];
-
+  values: string[];
   @Input()
-  formGroup: FormGroup;
+  label: string ;
 
   @Output()
   select: EventEmitter<string[]>;
 
- 
-  @ViewChild('itemInput', {static: false}) itemInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+
+  @ViewChild('itemInput', { static: false }) itemInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
 
   constructor() {
-    
-    this.filteredItems = this.itemCtrl.valueChanges.pipe(
-        startWith(null),
-        map((item: string | null) => item ? this._filter(item) : this.allItems.slice()));
+    this.allItems = this.values;
+    this.reloadItems();
     this.select = new EventEmitter();
   }
 
 
   ngOnInit() {
-     this.allItems = this.values['value'];
-     this.label    = this.values['labels'][0];
   }
 
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.allItems = this.values;
+    this.reloadItems();
+  }
 
   add(event: MatChipInputEvent): void {
     if (!this.matAutocomplete.isOpen) {
@@ -75,6 +72,7 @@ export class CustomDropdownComponent implements OnInit {
 
       this.itemCtrl.setValue(null);
     }
+    this.select.emit(this.items);
   }
 
   remove(item: string): void {
@@ -83,6 +81,7 @@ export class CustomDropdownComponent implements OnInit {
     if (index >= 0) {
       this.items.splice(index, 1);
     }
+    this.select.emit(this.items);
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -96,6 +95,14 @@ export class CustomDropdownComponent implements OnInit {
     const filterValue = value.toLowerCase();
 
     return this.allItems.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  reloadItems(){
+    if (this.allItems !== undefined && this.allItems.length > 0) {
+      this.filteredItems = this.itemCtrl.valueChanges.pipe(
+        startWith(null),
+        map((item: string | null) => item ? this._filter(item) : this.allItems.slice()));
+    }
   }
 
 }

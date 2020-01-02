@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/add", (req, res, next) => {
     let tag;
     tag = new Tag({
-        type: req.body.tagName
+        tagName: req.body.tagName
     });
 
     tag.save()
@@ -29,7 +29,7 @@ router.post("/add", (req, res, next) => {
 router.get("/get", (req, res, next) => {
     Tag.find().then(tags => {
             if (tags) {
-                res.status(200).json(tags);
+                res.status(200).json({tags:tags});
             } else {
                 res.status(404).json({ message: "Tags not found!" });
             }

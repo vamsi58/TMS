@@ -42,7 +42,7 @@ export class TagService {
                         tags: tagData.tags.map(tag => {
                             return {
                                 id: tag._id,
-                                type: tag.type
+                                tagName: tag.tagName
                             };
                         }),
                     };

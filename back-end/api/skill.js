@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/add", (req, res, next) => {
     let skill;
     skill = new Skill({
-        type: req.body.skillName
+        skillName: req.body.skillName
     });
 
     skill.save()
@@ -30,7 +30,7 @@ router.get("/get", (req, res, next) => {
     Skill.find()
     .then(skills => {
             if (skills) {
-                res.status(200).json(skills);
+                res.status(200).json({skills: skills});
             } else {
                 res.status(404).json({ message: "Skills not found!" });
             }

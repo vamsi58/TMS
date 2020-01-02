@@ -42,7 +42,7 @@ export class SkillService {
             skills: skillData.skills.map(skill => {
               return {
                 id: skill._id,
-                type: skill.type
+                skillName: skill.skillName
               };
             }),
           };

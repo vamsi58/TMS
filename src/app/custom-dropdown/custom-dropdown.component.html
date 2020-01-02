@@ -1,41 +1,23 @@
 <div fxLayout="column" class="control-layout">
-<mat-label class="custom-label">Select {{ label }}</mat-label>
-<mat-form-field floatLabel="always" class="form-element" appearance = "outline">
-  <mat-chip-list #chipList aria-label="Dropdown selection">
-    <mat-chip
-      *ngFor="let item of items"
-      [selectable]="selectable"
-      [removable]="removable"
-      (removed)="remove(item)">
-      {{item}}
-      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-    </mat-chip>
 
-    <mat-chip
-      [selectable]="selectable"
-      [removable]="removable"
-      (removed)="remove(item)">
-      Add New
-      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-    </mat-chip>
+  <mat-label class="custom-label">Select {{ label }}</mat-label>
+  <mat-form-field floatLabel="never" class="form-element" appearance="outline">
+    <mat-chip-list #chipList aria-label="Dropdown selection">
+      <mat-chip *ngFor="let item of items" [selectable]="selectable" [removable]="removable" (removed)="remove(item)">
+        {{item}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
 
+      <input placeholder="Select or Add {{ label }}" #itemInput matInput class="form-element-input"
+        [formControl]="itemCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
 
-    <input
-      placeholder="Select or Add {{ label }}"
-      #itemInput
-      [formControl]="itemCtrl"
-      [matAutocomplete]="auto"
-      [matChipInputFor]="chipList"
-      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      [matChipInputAddOnBlur]="addOnBlur"
-      (matChipInputTokenEnd)="add($event)" 
-      [formControl]="formControlDropdown">
-  </mat-chip-list>
-  
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
-    <mat-option *ngFor="let item of filteredItems | async" [value]="item">
-      {{item}}
-    </mat-option>
-  </mat-autocomplete>
-</mat-form-field>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+        {{item}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 </div>
