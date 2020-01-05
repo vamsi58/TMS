@@ -30,8 +30,8 @@ export class QuestionAddComponent implements OnInit {
   Complexity = ['High', 'Medium', 'Low'];
   questionType = "MCQ Single";
   edit_ques_id:string;
-  edit_mode:boolean;
-  title:string;
+  edit_mode:boolean = false;
+  title:string = "Create Question";
 
   config: AngularEditorConfig = {
     editable: true,
@@ -52,18 +52,14 @@ export class QuestionAddComponent implements OnInit {
     private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.edit_ques_id = this.activatedRoute.snapshot.params['id'];
-    if (this.edit_ques_id === undefined){
-      this.edit_mode = false;
-      this.title = "Create Question";
-    } else{
-      this.edit_mode = true;
-      this.title = "Edit Question";
-    }
-    
     this.loadTags();
     this.loadSkills();
     this.createForm();
+    this.edit_ques_id = this.activatedRoute.snapshot.params['id'];
+    if (this.edit_ques_id !== undefined){
+      this.edit_mode = true;
+      this.title = "Edit Question";
+    }
   }
 
   createForm() {
