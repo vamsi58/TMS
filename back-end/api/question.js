@@ -83,6 +83,7 @@ router.get("/view", (req, res, next) => {
 
 //Delete record
 router.delete("/delete/:id", checkAuth, (req, res, next) => {
+  console.log("confirmed delete"+req.params.id);
   Question.deleteOne({ _id: req.params.id })
     .then(result => {
       if (result.n > 0) {

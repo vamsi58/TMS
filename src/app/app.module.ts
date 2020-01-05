@@ -65,6 +65,7 @@ import {
 import { QuestionsComponent } from './questions/questions/questions.component';
 import { QuestionAddComponent } from './questions/question-add/question-add.component';
 import { CustomDropdownComponent } from './custom-dropdown/custom-dropdown.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { CustomDropdownComponent } from './custom-dropdown/custom-dropdown.compo
     HomeComponent,
     QuestionsComponent,
     QuestionAddComponent,
-    CustomDropdownComponent
+    CustomDropdownComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -130,6 +132,9 @@ import { CustomDropdownComponent } from './custom-dropdown/custom-dropdown.compo
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ConfirmDialogComponent
+  ]
 })
 export class AppModule { }

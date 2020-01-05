@@ -109,6 +109,13 @@ export class QuestionService {
 
   //Delete Question
   deleteQuestion(id: string) {
-    return this.http.delete("http://localhost:3000/api/question/delete/" + id);
+    this.http.delete("http://localhost:3000/api/question/delete/" + id).subscribe(result => {
+      const updatedQuestions = this.questions.filter(question => question.id !== id);
+      this.questions = updatedQuestions;
+      this.questionsUpdated.next({
+        questions: [...this.questions],
+        questionCount: 1
+      });
+    });
   }
 }

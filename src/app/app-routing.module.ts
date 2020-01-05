@@ -42,6 +42,10 @@ const routes: Routes = [
     { path: "add-question", 
      component: QuestionAddComponent
     },
+
+    { path: "edit-question/:id", 
+     component: QuestionAddComponent
+    },
        
      ]
 },

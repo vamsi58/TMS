@@ -1,0 +1,45 @@
+.question-div {
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mat-card{
+    width: 95%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+.mat-paginator{
+    display: inline-block;
+    width: 100%;
+}
+
+.mat-row:hover {
+    background: #f5f5f5;
+  }
+
+.mat-icon-button:hover{
+   color: rgb(234, 15, 168);
+}
+
+.mat-column-actions {
+    flex: 0 0 90px !important;
+    white-space: unset !important;
+  }
+
+.mat-column-select{
+    flex: 0 0 60px  ;
+    white-space: unset ;
+}
+.mat-column-id{
+    flex: 0 0 90px ;
+    white-space: unset ;
+}
+
+
+
+
+
+

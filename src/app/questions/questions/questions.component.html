@@ -1,81 +1,82 @@
-<div class="container mat-elevation-z8">
-    <div class="form">
-        <mat-form-field floatPlaceholder="never" color="accent">
-            <input matInput #filter placeholder="Filter issues">
-        </mat-form-field>
-    </div>
+<div class="question-div" (window:resize)="onResize($event)">
+    <mat-card [ngClass]="'mat-elevation-z8'">
+        <mat-card-content>
+            <div class="form">
+                <mat-form-field floatPlaceholder="never" color="accent">
+                    <input matInput #filter placeholder="Filter issues">
+                </mat-form-field>
+            </div>
 
-    <mat-table #table [dataSource]="dataSource" matSort class="mat-cell">
-
-        <!-- Select Column -->
-        <ng-container matColumnDef="select">
-            <mat-header-cell *matHeaderCellDef>
-             <mat-checkbox (change)="$event ? masterToggle() : null"
-                    [checked]="selection.hasValue() && isAllSelected()"
-                    [indeterminate]="selection.hasValue() && !isAllSelected()">
-             </mat-checkbox>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let row">
-             <mat-checkbox (click)="$event.stopPropagation()"
-                    (change)="$event ? selection.toggle(row) : null"
-                    [checked]="selection.isSelected(row)">
-            </mat-checkbox>
-            </mat-cell>
-        </ng-container>
-        
-        <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="type">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.type}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="tags">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Tags</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.tags}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="skills">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Skills</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.skills}}</mat-cell>
-        </ng-container>-->
-
-        <ng-container matColumnDef="stmt">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Statement</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.stmt}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-            <mat-header-cell *matHeaderCellDef>
-                <button mat-icon-button color="primary" routerLink="/add-question">
-                    <mat-icon>add</mat-icon>
-                </button>
+            <div fxLayout="row" class="control-layout">
                 <button mat-icon-button color="primary" (click)="refresh()">
                     <mat-icon>refresh</mat-icon>
                 </button>
-            </mat-header-cell>
-
-            <mat-cell *matCellDef="let row; let i=index;">
-                <button mat-icon-button color="accent"
-                    (click)="startView(i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at)">
-                    <mat-icon aria-label="View">view</mat-icon>
+                <button mat-icon-button color="primary" routerLink="/add-question">
+                    <mat-icon>add</mat-icon>
                 </button>
-                <button mat-icon-button color="accent"
-                    (click)="startEdit(i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at)">
-                    <mat-icon aria-label="Edit">edit</mat-icon>
-                </button>
+                <mat-paginator [pageSizeOptions]="[5, 10, 15, 20, 50, 100]" showFirstLastButtons>
+                </mat-paginator>
+            </div>
 
-                <button mat-icon-button color="accent" (click)="deleteItem(i, row.id, row.title, row.state, row.url)">
-                    <mat-icon aria-label="Delete">delete</mat-icon>
-                </button>
-            </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
+            <mat-table #table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc"
+                matclass="mat-cell">
 
-    <mat-paginator [pageSizeOptions]="[1, 2, 5, 10, 20]" showFirstLastButtons></mat-paginator>
+                <!-- Select Column -->
+                <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef>
+                        <!-- <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        >
+                        </mat-checkbox> -->
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                            [style.opacity]="row.show || selection.isSelected(row) ? 100 : 0">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="id" class="mat-column">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="stmt">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Question</mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.stmt}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let row; let i=index;">
+                        <button mat-icon-button [style.opacity]="row.show || selection.isSelected(row) ? 100 : 0"
+                            (click)="startView(row.id)">
+                            <mat-icon aria-label="View">open_in_new</mat-icon>
+                        </button>
+                        <button mat-icon-button [style.opacity]="row.show || selection.isSelected(row) ? 100 : 0"
+                            [routerLink]="['/edit-question', row.id]">
+                            <mat-icon aria-label="Edit">edit</mat-icon>
+                        </button>
+
+                        <button mat-icon-button [style.opacity]="row.show || selection.isSelected(row) ? 100 : 0"
+                            (click)="onDelete(row.id, row.stmt)">
+                            <mat-icon aria-label="Delete">delete</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                
+                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                    (mouseover)="onMouseOver(row)" 
+                    (mouseleave)="onMouseLeave(row)" 
+                   >
+                </mat-row>
+            </mat-table>
+        </mat-card-content>
+    </mat-card>
 </div>

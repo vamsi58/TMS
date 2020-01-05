@@ -9,6 +9,7 @@ import { NgForm } from "@angular/forms";
 import { AuthService } from "./../../services/auth.service";
 import { Tag } from './../../models/tag.model';
 import { Skill } from './../../models/skill.model';
+import { ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -28,6 +29,9 @@ export class QuestionAddComponent implements OnInit {
   tags: Tag[] = [];
   Complexity = ['High', 'Medium', 'Low'];
   questionType = "MCQ Single";
+  edit_ques_id:string;
+  edit_mode:boolean;
+  title:string;
 
   config: AngularEditorConfig = {
     editable: true,
@@ -44,9 +48,19 @@ export class QuestionAddComponent implements OnInit {
   };
 
   constructor(private formBuilder: FormBuilder, public questionService: QuestionService,
-    private userData: AuthService, private tagService: TagService, private skillService: SkillService) { }
+    private userData: AuthService, private tagService: TagService, private skillService: SkillService,
+    private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    this.edit_ques_id = this.activatedRoute.snapshot.params['id'];
+    if (this.edit_ques_id === undefined){
+      this.edit_mode = false;
+      this.title = "Create Question";
+    } else{
+      this.edit_mode = true;
+      this.title = "Edit Question";
+    }
+    
     this.loadTags();
     this.loadSkills();
     this.createForm();
@@ -54,7 +68,7 @@ export class QuestionAddComponent implements OnInit {
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      'type': ['Objective'],
+      'type': ['MCQ Single'],
       'tags': new FormControl('', Validators.required),
       'skills': ['', [Validators.required]],
       'stmtHtml': ['', Validators.required],
@@ -189,6 +203,8 @@ export class QuestionAddComponent implements OnInit {
     if (form.invalid) {
       return;
     }
+
+    console.log(this.formGroup.get('type').value);
     let currentUser = this.userData.getCurrentUserName();
     let questionText = (this.formGroup.get('stmtHtml').value).replace(/<[^>]*>/g, '');
     this.addNewItems();

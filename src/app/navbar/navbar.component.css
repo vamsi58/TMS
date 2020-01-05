@@ -4,10 +4,10 @@
 /* =========================================================================*/
 /*Menu Items Style */
 .mat-menu-item:hover, .mat-list-item:hover{
-  color: #aa3c9f;
+  color: rgb(234, 15, 168);
 }
 .mat-menu-item:hover .mat-icon{
-  color: #aa3c9f;
+  color: rgb(234, 15, 168);
 }
 .mat-toolbar {
   height: 2.5em;

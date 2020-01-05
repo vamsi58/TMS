@@ -1,0 +1,15 @@
+<mat-dialog-content>
+    <p class="question">
+        <q>
+            {{questonText}}
+        </q>
+    </p>
+    <mat-divider></mat-divider>
+    <p>
+        {{message}}
+    </p>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" (click)="onConfirmClick()" tabindex="1">{{confirmButtonText}}</button>
+    <button mat-raised-button mat-dialog-close tabindex="-1">{{cancelButtonText}}</button>
+</mat-dialog-actions>

@@ -1,8 +1,8 @@
 <div class="question-add-div">
-  <mat-card>
+  <mat-card [ngClass]="'mat-elevation-z8'">
     <mat-card-header>
       <mat-card-title>
-        Create Question
+        {{title}}
       </mat-card-title>
       <div class="fill"></div>
       <button mat-button color="primary" routerLink="/questions">
