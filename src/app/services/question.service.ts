@@ -3,7 +3,7 @@ import { Question } from './../models/question.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { Subject, pipe, from } from "rxjs";
+import { Subject, Observable, pipe, from } from "rxjs";
 
 
 import {
@@ -120,9 +120,9 @@ export class QuestionService {
   }
 
   // get a question by Id
-  getQuestion(id: string) {
+  getQuestion(id: string):Observable<any> {
     return this.http.get<{
-                id: string,
+                _id: string,
                 type: string,
                 tags: string[],
                 skills: string[],

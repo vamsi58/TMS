@@ -12,12 +12,12 @@
     </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
-      <form [formGroup]="formGroup" (ngSubmit)="onCreate(formGroup.value)" class="question-add-form">
+      <form *ngIf="!loadingData; else loading" [formGroup]="formGroup" (ngSubmit)="onCreate(formGroup.value)" class="question-add-form">
         <div fxLayout="column" class="control-layout">
           
-          <custom-dropdown [values]="dropdownTags"  [label]="'Tags'" [formGroup]="formGroup" (select)="onTagSelected($event)"></custom-dropdown>
+          <custom-dropdown [values]="dropdownTags" [editOptons]="editQuestion.tags" [label]="'Tags'" [formGroup]="formGroup" (select)="onTagSelected($event)"></custom-dropdown>
           
-          <custom-dropdown [values]="dropdownSkills" [label]="'Skills'" (select)="onSkillSelected($event)"></custom-dropdown>
+          <custom-dropdown [values]="dropdownSkills" [editOptons]="editQuestion.skills" [label]="'Skills'" (select)="onSkillSelected($event)"></custom-dropdown>
           
           <mat-label class="custom-label" color="primary">Select Complexity</mat-label>
           <mat-button-toggle-group name="complexity" class="form-element form-element-complexity" value="medium"
@@ -145,6 +145,9 @@
             [disabled]="!formGroup.valid">Create</button>
         </div>
       </form>
+      <ng-template #loading>
+        Loading User...
+      </ng-template>
     </mat-card-content>
   </mat-card>
 </div>

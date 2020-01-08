@@ -31,6 +31,9 @@ export class CustomDropdownComponent implements OnInit {
   values: string[];
   @Input()
   label: string ;
+  @Input()
+  editOptons: string[];
+ 
 
   @Output()
   select: EventEmitter<string[]>;
@@ -43,6 +46,7 @@ export class CustomDropdownComponent implements OnInit {
     this.allItems = this.values;
     this.reloadItems();
     this.select = new EventEmitter();
+    this.items = this.editOptons;
   }
 
 
@@ -53,6 +57,7 @@ export class CustomDropdownComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     this.allItems = this.values;
     this.reloadItems();
+    this.items
   }
 
   add(event: MatChipInputEvent): void {
