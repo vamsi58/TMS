@@ -30,7 +30,7 @@ export class QuestionService {
     return this.authStatusListener.asObservable();
   }
 
-  //Add Question
+  // Add Question
   createQuestion(dummyId: string, type: string, tags: string[], skills: string[], stmt: string, stmtHtml: string, options: Answer[], descAnswer: string, comment: string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
     const Question: Question = { id: dummyId, type: type, tags: tags, skills: skills, stmt: stmt, stmtHtml: stmtHtml, options: options, descAnswer: descAnswer, comment: comment, status: status, complexity:complexity, createdBy:createdBy, updatedBy:updatedBy, approvedBy:approvedBy };
 
@@ -44,7 +44,7 @@ export class QuestionService {
       });
   }
 
-  //Get all Questinos
+  // Get all Questinos
   viewQuestion(questionsperpage: number, 
                currentPage: number, 
                filteredType: string,
@@ -94,7 +94,7 @@ export class QuestionService {
     return this.questionsUpdated.asObservable();
   }
 
-  //Update Question
+  // Update Question
   updateQuestion(id: string, type: string, tags: string[], skills: string[], stmt: string, stmtHtml: string, options: Answer[], descAnswer: string, comment:string, status: string, complexity:string, createdBy:string, updatedBy:string, approvedBy:string) {
     const questionUpdateData: Question = { id: id, type: type, tags: tags, skills: skills, stmt: stmt, stmtHtml: stmtHtml, options: options, descAnswer: descAnswer, comment: comment, status: status, complexity:complexity, createdBy:createdBy, updatedBy:updatedBy, approvedBy:approvedBy };
 
@@ -107,7 +107,7 @@ export class QuestionService {
       });
   }
 
-  //Delete Question
+  // Delete Question
   deleteQuestion(id: string) {
     this.http.delete("http://localhost:3000/api/question/delete/" + id).subscribe(result => {
       const updatedQuestions = this.questions.filter(question => question.id !== id);
@@ -117,5 +117,25 @@ export class QuestionService {
         questionCount: 1
       });
     });
+  }
+
+  // get a question by Id
+  getQuestion(id: string) {
+    return this.http.get<{
+                id: string,
+                type: string,
+                tags: string[],
+                skills: string[],
+                stmt: string,
+                stmtHtml: string,
+                options: Answer[],
+                descAnswer: string,
+                comment: string,
+                status: string,
+                complexity: string,
+                createdBy: string,
+                updatedBy: string,
+                approvedBy: string     
+    }>("http://localhost:3000/api/question/get/" + id);
   }
 }

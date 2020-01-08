@@ -96,12 +96,12 @@ router.delete("/delete/:id", checkAuth, (req, res, next) => {
     .catch(error => {
       res.status(500).json({
         message: "Question Delete failed!"
-      });
+      }); 
     });
 });
 
 //View record by Id
-router.get("/getQuestion/:id", (req, res, next) => {
+router.get("/get/:id", (req, res, next) => {
   Question.findById(req.params.id)
     .then(question => {
       if (question) {

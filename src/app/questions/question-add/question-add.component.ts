@@ -1,3 +1,5 @@
+import { Answer } from './../../models/answer.model';
+import { Question } from './../../models/question.model';
 import { Component, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
@@ -9,7 +11,7 @@ import { NgForm } from "@angular/forms";
 import { AuthService } from "./../../services/auth.service";
 import { Tag } from './../../models/tag.model';
 import { Skill } from './../../models/skill.model';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -29,9 +31,10 @@ export class QuestionAddComponent implements OnInit {
   tags: Tag[] = [];
   Complexity = ['High', 'Medium', 'Low'];
   questionType = "MCQ Single";
-  edit_ques_id:string;
-  edit_mode:boolean = false;
-  title:string = "Create Question";
+  edit_ques_id: string;
+  edit_mode: boolean = false;
+  title: string = "Create Question";
+  editQuestion: Question;
 
   config: AngularEditorConfig = {
     editable: true,
@@ -56,27 +59,52 @@ export class QuestionAddComponent implements OnInit {
     this.loadSkills();
     this.createForm();
     this.edit_ques_id = this.activatedRoute.snapshot.params['id'];
-    if (this.edit_ques_id !== undefined){
+
+
+    if (this.edit_ques_id !== undefined) {
       this.edit_mode = true;
       this.title = "Edit Question";
+      this.getQuestion();
     }
+
   }
+
+    ngOnChanges() {
+      if (this.edit_mode){
+      this.updateForm();
+      }
+    }
+
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      'type': ['MCQ Single'],
-      'tags': new FormControl('', Validators.required),
-      'skills': ['', [Validators.required]],
-      'stmtHtml': ['', Validators.required],
+      'type': new FormControl('MCQ Single'),
+      'tags': new FormControl('', [Validators.required]),
+      'skills': new FormControl('', [Validators.required]),
+      'stmtHtml': new FormControl('', Validators.required),
       'options': this.formBuilder.array([]),
-      'descAnswer': ['a', Validators.required],
-      'comment': [''],
-      'complexity': ['medium']
+      'descAnswer': new FormControl('a', Validators.required),
+      'comment': new FormControl(''),
+      'complexity': new FormControl('low'),
     });
 
     this.addNewOption();
     this.addNewOption();
   }
+
+  updateForm() {
+    this.formGroup.get('type').setValue({
+      type: this.editQuestion.type,
+      tags: this.editQuestion.tags,
+      skills: this.editQuestion.skills,
+      stmtHtml: this.editQuestion.stmtHtml,
+      options: this.addUpdateOption(),
+      descAnswer: this.editQuestion.descAnswer,
+      comment: this.editQuestion.comment,
+      complexity: this.editQuestion.complexity,
+    });
+  }
+ 
 
   addNewOption() {
     const formOptions = (this.formGroup.get('options') as FormArray);
@@ -87,162 +115,199 @@ export class QuestionAddComponent implements OnInit {
     }));
   }
 
-  deleteOption(i: number) {
+  addUpdateOption(): FormArray {
     const formOptions = (this.formGroup.get('options') as FormArray);
-    formOptions.removeAt(i);
-    if (formOptions.length === 0) {
-      this.addNewOption();
-      this.addNewOption();
-    } else if (formOptions.length === 1) {
-      this.addNewOption();
+    for (let editOption of this.editQuestion.options) {
+      formOptions.push(this.formBuilder.group({
+        option: new FormControl({ value: editOption.option, disabled: true }),
+        answer: [editOption.answer, Validators.required],
+        isCorrect: [editOption.isCorrect]
+      }));
+      return formOptions;
     }
   }
 
-  setOptionValue(fa: FormArray, i: number) {
-    fa.controls['option'].setValue('option ' + (i + 1));
-  }
 
 
-  getError(el) {
-    switch (el) {
-      case 'tags':
-        if (this.formGroup.get('tags').hasError('required')) {
-          return 'Tags Required';
-        }
-        break;
-      case 'skills':
-        if (this.formGroup.get('skills').hasError('required')) {
-          return 'Skills Required';
-        }
-        break;
-      case 'stmtHtml':
-        if (this.formGroup.get('stmtHtml').hasError('required')) {
-          return 'Question Required';
-        }
-        break;
+    deleteOption(i: number) {
+      const formOptions = (this.formGroup.get('options') as FormArray);
+      formOptions.removeAt(i);
+      if (formOptions.length === 0) {
+        this.addNewOption();
+        this.addNewOption();
+      } else if (formOptions.length === 1) {
+        this.addNewOption();
+      }
+    }
 
-      case 'answer':
-        return 'Answer Required';
+    setOptionValue(fa: FormArray, i: number) {
+      fa.controls['option'].setValue('option ' + (i + 1));
+    }
 
-        break;
-      case 'descAnswer':
-        if (this.formGroup.get('descAnswer').hasError('required')) {
-          return 'Desciptive Answer Required';
-        }
-        break;
-      case 'onewordAnswer':
+
+    getError(el) {
+      switch (el) {
+        case 'tags':
+          if (this.formGroup.get('tags').hasError('required')) {
+            return 'Tags Required';
+          }
+          break;
+        case 'skills':
+          if (this.formGroup.get('skills').hasError('required')) {
+            return 'Skills Required';
+          }
+          break;
+        case 'stmtHtml':
+          if (this.formGroup.get('stmtHtml').hasError('required')) {
+            return 'Question Required';
+          }
+          break;
+
+        case 'answer':
+          return 'Answer Required';
+
+          break;
+        case 'descAnswer':
+          if (this.formGroup.get('descAnswer').hasError('required')) {
+            return 'Desciptive Answer Required';
+          }
+          break;
+        case 'onewordAnswer':
           if (this.formGroup.get('descAnswer').hasError('required')) {
             return 'One Word Answer Required';
           }
           break;
-      case 'comment':
-        if (this.formGroup.get('comment').hasError('required')) {
-          return 'Explanation Required';
-        }
-        break;
-      case 'status':
-        if (this.formGroup.get('status').hasError('required')) {
-          return 'Status Required';
-        }
-        break;
-      case 'complexity':
-        if (this.formGroup.get('complexity').hasError('required')) {
-          return 'Complexity Required';
-        }
-        break;
-      default:
-        return '';
-    }
-  }
-
-  get optionsForm() {
-    return (<FormArray>this.formGroup.get('options')).controls;
-  }
-
-  clearOptions() {
-    const formOptions = (this.formGroup.get('options') as FormArray);
-    while (formOptions.length !== 0) {
-      formOptions.removeAt(0)
-    }
-  }
-
-  onQuestionTypeChange(event: MatTabChangeEvent) {
-    this.formGroup.controls['type'].setValue(event.tab.textLabel);
-    this.questionType = event.tab.textLabel;
-    this.clearOptions();
-    var re = /MCQ/gi;
-    if (this.questionType.search(re) !== -1) {
-      this.addNewOption();
-      this.addNewOption();
-    } else {
-      this.formGroup.get('descAnswer').reset();
-      this.formGroup.get('descAnswer').setValue('');
-    }
-  }
-
-  onComplexityChange(event: MatSliderChange) {
-    this.formGroup.controls['complexity'].setValue(event.value);
-  }
-
-  onTagSelected(data:any){
-    this.formGroup.get('tags').setValue(data);
-    this.selectedTags = data;
-  }
-
-  onSkillSelected(data:any){
-    this.formGroup.get('skills').setValue(data);
-    this.selectedSkills = data;
-  }
-
-
-  onCreate(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
-
-    console.log(this.formGroup.get('type').value);
-    let currentUser = this.userData.getCurrentUserName();
-    let questionText = (this.formGroup.get('stmtHtml').value).replace(/<[^>]*>/g, '');
-    this.addNewItems();
-    this.questionService.createQuestion('dummyid', this.formGroup.get('type').value, this.formGroup.get('tags').value, this.formGroup.get('skills').value, questionText, this.formGroup.get('stmtHtml').value, this.formGroup.get('options').value,
-    this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
-  }
-
-
-  loadSkills(){
-    this.skillService.getSkills();
-    this.skillService
-      .getSkillUpdateListener()
-      .subscribe((skillData: { skills: Skill[]; }) => {
-        this.skills = skillData.skills;
-        this.dropdownSkills = this.skills.map(a => a.skillName);
-      }); 
-  }
-
-  loadTags(){
-    this.tagService.getTags();
-    this.tagService
-      .getTagUpdateListener()
-      .subscribe((tagData: { tags: Tag[]; }) => {
-        this.tags = tagData.tags;
-        this.dropdownTags = this.tags.map(a => a.tagName);
-      }); 
-     
-  }
-
-  addNewItems(){
-    this.selectedSkills.forEach(element => {
-      if (this.dropdownSkills.indexOf(element) < 0){
-        this.skillService.createSkill(element);
+        case 'comment':
+          if (this.formGroup.get('comment').hasError('required')) {
+            return 'Explanation Required';
+          }
+          break;
+        case 'status':
+          if (this.formGroup.get('status').hasError('required')) {
+            return 'Status Required';
+          }
+          break;
+        case 'complexity':
+          if (this.formGroup.get('complexity').hasError('required')) {
+            return 'Complexity Required';
+          }
+          break;
+        default:
+          return '';
       }
-    });
-
-  this.selectedTags.forEach(element => {
-    if (this.dropdownTags.indexOf(element) < 0){
-      this.tagService.createTag(element);
     }
-  });
-}
+
+    get optionsForm() {
+      return (<FormArray>this.formGroup.get('options')).controls;
+    }
+
+    clearOptions() {
+      const formOptions = (this.formGroup.get('options') as FormArray);
+      while (formOptions.length !== 0) {
+        formOptions.removeAt(0)
+      }
+    }
+
+    onQuestionTypeChange(event: MatTabChangeEvent) {
+      this.formGroup.controls['type'].setValue(event.tab.textLabel);
+      this.questionType = event.tab.textLabel;
+      this.clearOptions();
+      var re = /MCQ/gi;
+      if (this.questionType.search(re) !== -1) {
+        this.addNewOption();
+        this.addNewOption();
+      } else {
+        this.formGroup.get('descAnswer').reset();
+        this.formGroup.get('descAnswer').setValue('');
+      }
+    }
+
+    onComplexityChange(event: MatSliderChange) {
+      this.formGroup.controls['complexity'].setValue(event.value);
+    }
+
+    onTagSelected(data: any) {
+      this.formGroup.get('tags').setValue(data);
+      this.selectedTags = data;
+    }
+
+    onSkillSelected(data: any) {
+      this.formGroup.get('skills').setValue(data);
+      this.selectedSkills = data;
+    }
+
+
+    onCreate(form: NgForm) {
+      if (form.invalid) {
+        return;
+      }
+
+      console.log(this.formGroup.get('type').value);
+      let currentUser = this.userData.getCurrentUserName();
+      let questionText = (this.formGroup.get('stmtHtml').value).replace(/<[^>]*>/g, '');
+      this.addNewItems();
+      this.questionService.createQuestion('dummyid', this.formGroup.get('type').value, this.formGroup.get('tags').value, this.formGroup.get('skills').value, questionText, this.formGroup.get('stmtHtml').value, this.formGroup.get('options').value,
+        this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
+    }
+
+
+    loadSkills() {
+      this.skillService.getSkills();
+      this.skillService
+        .getSkillUpdateListener()
+        .subscribe((skillData: { skills: Skill[]; }) => {
+          this.skills = skillData.skills;
+          this.dropdownSkills = this.skills.map(a => a.skillName);
+        });
+    }
+
+    loadTags() {
+      this.tagService.getTags();
+      this.tagService
+        .getTagUpdateListener()
+        .subscribe((tagData: { tags: Tag[]; }) => {
+          this.tags = tagData.tags;
+          this.dropdownTags = this.tags.map(a => a.tagName);
+        });
+    }
+
+    addNewItems() {
+      this.selectedSkills.forEach(element => {
+        if (this.dropdownSkills.indexOf(element) < 0) {
+          this.skillService.createSkill(element);
+        }
+      });
+
+      this.selectedTags.forEach(element => {
+        if (this.dropdownTags.indexOf(element) < 0) {
+          this.tagService.createTag(element);
+        }
+      });
+    }
+
+  private getQuestion() {
+    this.questionService.getQuestion(this.edit_ques_id).subscribe(questionData => {
+      this.editQuestion = {
+        id: questionData.id,
+        type: questionData.type,
+        tags: questionData.tags,
+        skills: questionData.skills,
+        stmt: questionData.stmt,
+        stmtHtml: questionData.stmtHtml,
+        options: questionData.options,
+        descAnswer: questionData.descAnswer,
+        comment: questionData.comment,
+        status: questionData.status,
+        complexity: questionData.complexity,
+        createdBy: questionData.createdBy,
+        updatedBy: questionData.updatedBy,
+        approvedBy: questionData.approvedBy
+      }
+      this.updateForm();
+    });
+  }
+
+
 }
 
 
