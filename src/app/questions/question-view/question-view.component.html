@@ -1,0 +1,37 @@
+<div *ngIf="!loadingData; else loading" class="question-view-div">
+  <mat-card [ngClass]="'mat-elevation-z8'">
+    <mat-card-header>
+      <mat-card-title>
+        View Question
+      </mat-card-title>
+      <div class="fill"></div>
+      <button mat-button color="primary" routerLink="/questions">
+        <mat-icon>first_page</mat-icon>
+        Questions
+      </button>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+
+    <mat-card-content>
+      <section class="questoin-section">
+         <mat-label>Question:</mat-label>
+        <ins [innerHTML]="question.stmtHtml"></ins>
+      </section>
+       <section class="answer-section">
+       <mat-label>Answer:</mat-label>
+       {{question.descAnswer}}
+      </section>
+    
+    </mat-card-content>
+    <mat-card-footer>
+       <button mat-icon-button color="accent" [routerLink]="['/edit-question', question.id]"><mat-icon>edit</mat-icon></button>
+       <button mat-icon-button color="warn" [routerLink]="['/edit-question', question.id]"><mat-icon>delete</mat-icon></button>
+    </mat-card-footer>
+  </mat-card>
+</div>
+<ng-template #loading>
+  <div class="progress-spinner">
+    <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
+    </mat-progress-spinner>
+  </div>
+</ng-template>

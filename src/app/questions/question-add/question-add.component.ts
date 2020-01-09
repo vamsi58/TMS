@@ -16,8 +16,6 @@ import { Skill } from './../../models/skill.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
-
-
 @Component({
   selector: 'app-question-add',
   templateUrl: './question-add.component.html',
@@ -36,11 +34,16 @@ export class QuestionAddComponent implements OnInit {
   Complexity = ['High', 'Medium', 'Low'];
   questionType = "MCQ Single";
   edit_ques_id: string;
-  edit_mode: boolean = false;
+  currentMode: string = "Create";
   title: string = "Create Question";
   editQuestion: Question;
   questonObservable: Observable<Question>;
   loadingData: boolean = false;
+  defaultCommplexity: string = "medium";
+  defaultQuestionType: number = 0;
+  submitButton: string = "create";
+  editTags: String[] = [];
+  editSkills: String[] = [];
 
   config: AngularEditorConfig = {
     editable: true,
@@ -67,20 +70,20 @@ export class QuestionAddComponent implements OnInit {
     this.edit_ques_id = this.activatedRoute.snapshot.params['id'];
 
     if (this.edit_ques_id !== undefined) {
-      this.edit_mode = true;
+      this.currentMode = "edit";
       this.title = "Edit Question";
       this.loadingData = true;
       this.getQuestion();
+      this.submitButton = "Save";
     }
 
-  }
+  } 
 
   ngOnChanges() {
-    if (this.edit_mode) {
+    if (this.currentMode  === "edit" ) {
       this.updateForm();
     }
   }
-
 
   createForm() {
     this.formGroup = this.formBuilder.group({
@@ -104,13 +107,25 @@ export class QuestionAddComponent implements OnInit {
       tags: this.editQuestion.tags,
       skills: this.editQuestion.skills,
       stmtHtml: this.editQuestion.stmtHtml,
-      // options: this.updateOption(),
+      options: this.editQuestion.options,
       descAnswer: this.editQuestion.descAnswer,
       comment: this.editQuestion.comment,
       complexity: this.editQuestion.complexity,
     });
+    this.editTags = this.editQuestion.tags;
+    this.editSkills = this.editQuestion.skills;
+    this.defaultCommplexity = this.editQuestion.complexity;
+    if (this.editQuestion.type === "MCQ Multiple") {
+      this.defaultQuestionType = 1;
+    } else if (this.editQuestion.type === "One Word") {
+      this.defaultQuestionType = 2;
+    } else if (this.editQuestion.type === "Descriptive") {
+      this.defaultQuestionType = 3;
+    } else {
+      this.defaultQuestionType = 0;
+    }
+    this.updateOption();
   }
-
 
   addNewOption() {
     const formOptions = (this.formGroup.get('options') as FormArray);
@@ -122,7 +137,8 @@ export class QuestionAddComponent implements OnInit {
   }
 
   updateOption(): FormArray {
-    const formOptions = (this.formGroup.get('options') as FormArray);
+    let formOptions = (this.formGroup.get('options') as FormArray);
+    this.deleteAllOptions(formOptions);
     if (this.editQuestion.options !== undefined) {
       for (let editOption of this.editQuestion.options) {
         formOptions.push(this.formBuilder.group({
@@ -135,6 +151,11 @@ export class QuestionAddComponent implements OnInit {
     return formOptions;
   }
 
+  deleteAllOptions(formOptions){
+    while (formOptions.length !== 0) {
+    formOptions.removeAt(0);
+  }
+  }
 
 
   deleteOption(i: number) {
@@ -245,20 +266,6 @@ export class QuestionAddComponent implements OnInit {
   }
 
 
-  onCreate(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
-
-
-    let currentUser = this.userData.getCurrentUserName();
-    let questionText = (this.formGroup.get('stmtHtml').value).replace(/<[^>]*>/g, '');
-    this.addNewItems();
-    this.questionService.createQuestion('dummyid', this.formGroup.get('type').value, this.formGroup.get('tags').value, this.formGroup.get('skills').value, questionText, this.formGroup.get('stmtHtml').value, this.formGroup.get('options').value,
-      this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
-  }
-
-
   loadSkills() {
     this.skillService.getSkills();
     this.skillService
@@ -312,12 +319,28 @@ export class QuestionAddComponent implements OnInit {
         approvedBy: questionData.approvedBy
       }
       this.updateForm();
-      console.log(this.editQuestion);
       this.loadingData = false;
     });
   }
 
+  onCreate(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
 
+    let currentUser = this.userData.getCurrentUserName();
+    let questionText = (this.formGroup.get('stmtHtml').value).replace(/<[^>]*>/g, '');
+    this.addNewItems();
+    console.log("this is comment"+ this.currentMode);
+    if (this.currentMode === "edit") {
+      this.questionService.updateQuestion(this.editQuestion.id, this.formGroup.get('type').value, this.formGroup.get('tags').value, this.formGroup.get('skills').value, questionText, this.formGroup.get('stmtHtml').value, this.formGroup.get('options').value,
+        this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
+    }
+    else {
+      this.questionService.createQuestion('dummyid', this.formGroup.get('type').value, this.formGroup.get('tags').value, this.formGroup.get('skills').value, questionText, this.formGroup.get('stmtHtml').value, this.formGroup.get('options').value,
+        this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
+    }
+  }
 }
 
 

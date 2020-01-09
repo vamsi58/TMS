@@ -9,6 +9,7 @@ import { map, startWith } from 'rxjs/operators';
 
 
 
+
 @Component({
   selector: 'custom-dropdown',
   templateUrl: './custom-dropdown.component.html',
@@ -24,7 +25,7 @@ export class CustomDropdownComponent implements OnInit {
   itemCtrl = new FormControl();
   filteredItems: Observable<string[]>;
   allItems: string[] = [];
-  items: string[] = [];
+  // items: string[] = [];
   formControlDropdown = new FormControl('', Validators.required);
 
   @Input()
@@ -32,7 +33,7 @@ export class CustomDropdownComponent implements OnInit {
   @Input()
   label: string ;
   @Input()
-  editOptons: string[];
+  items: string[];
  
 
   @Output()
@@ -46,18 +47,16 @@ export class CustomDropdownComponent implements OnInit {
     this.allItems = this.values;
     this.reloadItems();
     this.select = new EventEmitter();
-    this.items = this.editOptons;
+    // this.items = this.editOptons;
   }
 
 
   ngOnInit() {
   }
 
-
   ngOnChanges(changes: SimpleChanges): void {
     this.allItems = this.values;
     this.reloadItems();
-    this.items
   }
 
   add(event: MatChipInputEvent): void {

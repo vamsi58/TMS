@@ -8,7 +8,8 @@ import { SigninComponent } from "./signin/signin.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { HomeComponent } from "./home/home.component";
 import { QuestionsComponent } from "./questions/questions/questions.component";
-import { QuestionAddComponent } from "./questions/question-add/question-add.component";   
+import { QuestionAddComponent } from "./questions/question-add/question-add.component";  
+import { QuestionViewComponent } from "./questions/question-view/question-view.component";   
 
 
 const routes: Routes = [
@@ -46,6 +47,10 @@ const routes: Routes = [
     { path: "edit-question/:id", 
      component: QuestionAddComponent
     },
+    { path: "view-question/:id", 
+     component: QuestionViewComponent
+    },
+
        
      ]
 },

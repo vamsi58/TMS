@@ -10,8 +10,6 @@ import { MatPaginator, MatSort } from '@angular/material';
 import { state, style, trigger } from '@angular/animations';
 
 
-
-
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.component.html',
@@ -36,6 +34,7 @@ export class QuestionsComponent implements OnInit {
   displayedColumns = ['select', 'id', 'stmt', 'actions'];
   dataSource = new MatTableDataSource<Question>(this.questions);
   selection = new SelectionModel<Question>(true, []);
+  loadingData:boolean = true;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -56,7 +55,7 @@ export class QuestionsComponent implements OnInit {
       this.filteredType,
       this.filteredCats,
       this.filteredSubcats);
-    this.questionsSub = this.questionService
+      this.questionsSub = this.questionService
       .getQuestionUpdateListener()
       .subscribe((questionData: { questions: Question[]; questionCount: number }) => {
         this.totalQuestions = questionData.questionCount;
@@ -64,6 +63,7 @@ export class QuestionsComponent implements OnInit {
         this.dataSource = new MatTableDataSource<Question>(this.questions);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.loadingData = false;
       });
   }
 

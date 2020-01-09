@@ -66,6 +66,7 @@ import { QuestionsComponent } from './questions/questions/questions.component';
 import { QuestionAddComponent } from './questions/question-add/question-add.component';
 import { CustomDropdownComponent } from './custom-dropdown/custom-dropdown.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { QuestionViewComponent } from './questions/question-view/question-view.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     QuestionsComponent,
     QuestionAddComponent,
     CustomDropdownComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    QuestionViewComponent
   ],
   imports: [
     BrowserModule,

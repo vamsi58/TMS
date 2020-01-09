@@ -1,4 +1,4 @@
-<div class="question-div" (window:resize)="onResize($event)">
+<div *ngIf="!loadingData; else loading" class="question-div" (window:resize)="onResize($event)">
     <mat-card [ngClass]="'mat-elevation-z8'">
         <mat-card-content>
             <div class="form">
@@ -54,7 +54,7 @@
 
                     <mat-cell *matCellDef="let row; let i=index;">
                         <button mat-icon-button [style.opacity]="row.show || selection.isSelected(row) ? 100 : 0"
-                            (click)="startView(row.id)">
+                            [routerLink]="['/view-question', row.id]">
                             <mat-icon aria-label="View">open_in_new</mat-icon>
                         </button>
                         <button mat-icon-button [style.opacity]="row.show || selection.isSelected(row) ? 100 : 0"
@@ -80,3 +80,9 @@
         </mat-card-content>
     </mat-card>
 </div>
+<ng-template #loading>
+  <div class="progress-spinner">
+    <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
+    </mat-progress-spinner>
+  </div>
+</ng-template>
