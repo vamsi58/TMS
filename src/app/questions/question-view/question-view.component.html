@@ -25,7 +25,7 @@
     </mat-card-content>
     <mat-card-footer>
        <button mat-icon-button color="accent" [routerLink]="['/edit-question', question.id]"><mat-icon>edit</mat-icon></button>
-       <button mat-icon-button color="warn" [routerLink]="['/edit-question', question.id]"><mat-icon>delete</mat-icon></button>
+       <button mat-icon-button color="warn" (click)="onDelete(question.id, question.stmt)"><mat-icon>delete</mat-icon></button>
     </mat-card-footer>
   </mat-card>
 </div>

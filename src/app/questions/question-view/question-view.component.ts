@@ -14,6 +14,8 @@ import { AuthService } from "./../../services/auth.service";
 import { Tag } from './../../models/tag.model';
 import { Skill } from './../../models/skill.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmDialogComponent } from './../../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -27,7 +29,7 @@ export class QuestionViewComponent implements OnInit {
   quesId:string;
   loadingData:boolean = true;
   
-  constructor(public questionService: QuestionService, private activatedRoute: ActivatedRoute, private router: Router) { }
+  constructor(public questionService: QuestionService, private activatedRoute: ActivatedRoute, private router: Router,private dialog: MatDialog) { }
 
   ngOnInit() {
     this.quesId = this.activatedRoute.snapshot.params['id'];
@@ -57,6 +59,19 @@ export class QuestionViewComponent implements OnInit {
         approvedBy: questionData.approvedBy
       }
       this.loadingData = false;
+    });
+  }
+
+  onDelete(quesId: string, quesName:string ) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        message: 'Are you sure, you want to delete this question?',
+        question: quesName,
+        buttonText: {
+          ok: 'Delete',
+          cancel: 'Cancel'
+        }
+      }
     });
   }
 
