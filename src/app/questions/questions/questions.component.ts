@@ -1,13 +1,18 @@
 import { ConfirmDialogComponent } from './../../confirm-dialog/confirm-dialog.component';
 import { Question } from './../../models/question.model';
 import { QuestionService } from './../../services/question.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Subscription } from "rxjs";
 import { MatDialog } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatSort } from '@angular/material';
 import { state, style, trigger } from '@angular/animations';
+import { Tag } from './../../models/tag.model';
+import { Skill } from './../../models/skill.model';
+import { SkillService } from './../../services/skill.service';
+import { TagService } from './../../services/tag.service';
+
 
 
 @Component({
@@ -31,16 +36,28 @@ export class QuestionsComponent implements OnInit {
   private filteredCats: string[];
   private filteredSubcats: string[];
   questions: Question[] = [];
-  displayedColumns = ['select', 'id', 'stmt', 'actions'];
+  //displayedColumns = ['select', 'id', 'stmt', 'actions'];
+  displayedColumns = [ 'id', 'stmt', 'actions'];
   dataSource = new MatTableDataSource<Question>(this.questions);
   selection = new SelectionModel<Question>(true, []);
   loadingData:boolean = true;
+  filterTypes = ['MCQ Single', 'MCQ Multiple','One Word', 'Descriptive'];
+  filterComplexities = ['High', 'Medium','Low'];
+  filterStatus = ['All', 'Approved', 'To be approved'];
+  filterTags:string[] = ['test1', 'test2'];
+  filterSkills:string[] = ['test1', 'test2'];
+  skills: Skill[] = [];
+  tags: Tag[] = [];
+  
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @Input()
+  itemsSelected: string[];
 
   constructor(private questionService: QuestionService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog, private tagService: TagService, private skillService: SkillService) {
+      this.itemsSelected = ['test1', 'test2 selected','test2 selected','test2 selected','test2 selected' ];
   }
 
   public multiselectfield: Object = { text: 'name', value: 'id' };
@@ -65,6 +82,8 @@ export class QuestionsComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.loadingData = false;
       });
+      this.loadTags();
+      this.loadSkills();
   }
 
   ngAfterViewInit() {
@@ -130,4 +149,34 @@ export class QuestionsComponent implements OnInit {
       }
     });
   }
-}
+
+
+  removeFilterItem(item: string): void {
+    const index = this.itemsSelected.indexOf(item);
+    if (index >= 0) {
+      this.itemsSelected.splice(index, 1);
+    }
+  }
+
+  loadSkills() {
+    this.skillService.getSkills();
+    this.skillService
+      .getSkillUpdateListener()
+      .subscribe((skillData: { skills: Skill[]; }) => {
+        this.skills = skillData.skills;
+        this.filterSkills = this.skills.map(a => a.skillName);
+        console.log("loaded now");
+      });
+  }
+
+  loadTags() {
+    this.tagService.getTags();
+    this.tagService
+      .getTagUpdateListener()
+      .subscribe((tagData: { tags: Tag[]; }) => {
+        this.tags = tagData.tags;
+        this.filterTags = this.tags.map(a => a.tagName);
+      });
+  }
+
+} 

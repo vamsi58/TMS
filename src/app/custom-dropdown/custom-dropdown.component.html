@@ -1,5 +1,4 @@
 <div fxLayout="column" class="control-layout">
-
   <mat-label class="custom-label">Select {{ label }}</mat-label>
   <mat-form-field floatLabel="never" class="form-element" appearance="outline">
     <mat-chip-list #chipList aria-label="Dropdown selection">
@@ -15,9 +14,11 @@
     </mat-chip-list>
 
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+      <cdk-virtual-scroll-viewport itemSize="45" minBufferPx="360" maxBufferPx="360" class="virtual-scroll">
+      <mat-option *cdkVirtualFor="let item of filteredItems | async" [value]="item">
         {{item}}
       </mat-option>
+      </cdk-virtual-scroll-viewport>
     </mat-autocomplete>
   </mat-form-field>
 </div>

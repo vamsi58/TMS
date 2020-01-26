@@ -13,7 +13,7 @@ import { NgForm } from "@angular/forms";
 import { AuthService } from "./../../services/auth.service";
 import { Tag } from './../../models/tag.model';
 import { Skill } from './../../models/skill.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; 
 
 
 @Component({

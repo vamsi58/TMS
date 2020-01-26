@@ -4,15 +4,29 @@
 
 .custom-label{
   margin-left: 8px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .form-element {
   max-width: 40em;
+  font-size:12px;
   /* margin-bottom: .50em; */
 }
+mat-option {
+  height: 45px;
+  font-size: 12px;
+}
+.virtual-scroll {
+  height: 80px;
+  overflow-x: hidden;
+}
+/*Search Results
+Web results
+Adjust height of dropdown menu Angular7 autocomplete with virtual*/
+
 .form-element-input{
   height: 2.3em;
+  font-size:12px;
 }
 
 .mat-chip{
@@ -20,4 +34,7 @@
   font-size: 12px;
   padding: 1px 8px !important;
   margin: 0px 0px 0px 0px;
+}
+mat-form-field {
+  width: 100%;
 }

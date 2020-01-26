@@ -62,6 +62,7 @@ import {
   MatDialogRef
    
 } from '@angular/material';
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 import { QuestionsComponent } from './questions/questions/questions.component';
 import { QuestionAddComponent } from './questions/question-add/question-add.component';
 import { CustomDropdownComponent } from './custom-dropdown/custom-dropdown.component';
@@ -129,7 +130,8 @@ import { QuestionViewComponent } from './questions/question-view/question-view.c
     MatTooltipModule,
     MatTreeModule,
     FlexLayoutModule,
-    AngularEditorModule
+    AngularEditorModule,
+    ScrollDispatchModule
 
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

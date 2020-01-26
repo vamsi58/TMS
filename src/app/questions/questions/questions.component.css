@@ -15,6 +15,18 @@
   flex: 1;
 }
 
+.search-section{
+  margin-top:20px !important;
+  margin-bottom:10px; 
+}
+
+
+
+.filter-section{
+  margin-bottom:30px;
+  margin-top:10px !important;
+}
+
 .mat-paginator{
     display: inline-block;
     width: 100%;
@@ -48,6 +60,83 @@
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
 }
+
+.filter-type{
+  display: block;
+}
+
+.form-search{
+  display:block;
+  height:2em;
+}
+
+.filter-panel{
+height:100%;
+}
+
+.filter-questionType {
+  height: 135px;
+}
+
+.filter-questionComplexity{
+  height: 100px;
+}
+
+.filter-questionStatus{
+  height: 100px;
+}
+
+.filter-type {
+  height: 35px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(114, 111, 113);
+   
+}
+ 
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(114, 111, 113);
+}
+
+.mat-chip{
+  border: groove 0.4px;
+  border-radius: 3px !important;
+  font-size: 11px;
+  padding: 1px 8px !important;
+  margin: 0px 0px 0px 0px;
+  height: 2px !important;
+  background: transparent;
+  color: var(--white);
+}
+
+.mat-chip.mat-standard-chip .mat-chip-remove {
+  color: var(--white);
+}
+
+::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
+::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
+
+mat-panel-title.mat-title{
+  font-size: 12px;
+}
+.filter-item{
+  font-size: 11px;
+}
+.filter-button{
+color: rgb(133, 127, 127) !important;
+}
+
+
+
 
 
 
