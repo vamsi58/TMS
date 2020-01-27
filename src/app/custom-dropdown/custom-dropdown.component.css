@@ -12,29 +12,63 @@
   font-size:12px;
   /* margin-bottom: .50em; */
 }
+.form-element-input{
+  min-width: 20%;
+  max-width: 100%;
+  height: 50px;
+}
 mat-option {
-  height: 45px;
+  height: 30px;
   font-size: 12px;
 }
 .virtual-scroll {
   height: 80px;
   overflow-x: hidden;
 }
-/*Search Results
-Web results
-Adjust height of dropdown menu Angular7 autocomplete with virtual*/
+::ng-deep .mat-autocomplete-panel.autocomplete {
+    max-height: 350px !important;
+}
+
+.virtual-scroll ::ng-deep .cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper {
+    width: 100%;
+}
+
+.autocomplete {
+    max-height: 150px !important;
+}
+
 
 .form-element-input{
-  height: 2.3em;
+  height: 2em !important;
   font-size:12px;
 }
 
 .mat-chip{
   border-radius: 2px !important;
   font-size: 12px;
-  padding: 1px 8px !important;
+  /*padding: 1px 8px !important;*/
   margin: 0px 0px 0px 0px;
+  height: 10px !important;
+  background: transparent;
+  color: var(--white);
 }
 mat-form-field {
   width: 100%;
 }
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(114, 111, 113);
+   
+}
+ 
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(114, 111, 113);
+}
+

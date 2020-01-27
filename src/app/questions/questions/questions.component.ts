@@ -12,6 +12,7 @@ import { Tag } from './../../models/tag.model';
 import { Skill } from './../../models/skill.model';
 import { SkillService } from './../../services/skill.service';
 import { TagService } from './../../services/tag.service';
+import { MatCheckboxModule } from '@angular/material';
 
 
 
@@ -37,27 +38,80 @@ export class QuestionsComponent implements OnInit {
   private filteredSubcats: string[];
   questions: Question[] = [];
   //displayedColumns = ['select', 'id', 'stmt', 'actions'];
-  displayedColumns = [ 'id', 'stmt', 'actions'];
+  displayedColumns = ['id', 'stmt', 'actions'];
   dataSource = new MatTableDataSource<Question>(this.questions);
   selection = new SelectionModel<Question>(true, []);
-  loadingData:boolean = true;
-  filterTypes = ['MCQ Single', 'MCQ Multiple','One Word', 'Descriptive'];
-  filterComplexities = ['High', 'Medium','Low'];
-  filterStatus = ['All', 'Approved', 'To be approved'];
-  filterTags:string[] = ['test1', 'test2'];
-  filterSkills:string[] = ['test1', 'test2'];
+  loadingData: boolean = true;
+  //filterTypes = ['MCQ Single', 'MCQ Multiple', 'One Word', 'Descriptive'];
+  filterSelectedStatus:string = "All";
+  
+  filterTypes = [
+    { 
+      id:1,
+      value:'MCQ Single',
+      checked:false
+     },
+     { 
+      id:1,
+      value:'MCQ Multiple',
+      checked:false
+     },
+     { 
+      id:1,
+      value:'One Word',
+      checked:false
+     },
+     { 
+      id:1,
+      value:'Descriptive',
+      checked:false
+     } ];
+
+  filterComplexities = [
+    { 
+      id:1,
+      value:'High',
+      checked:false
+     },
+     { 
+      id:1,
+      value:'Medium',
+      checked:false
+     },
+     { 
+      id:1,
+      value:'Low',
+      checked:false
+     } ];
+
+  filterStatus = [
+    { 
+      id:1,
+      value:'All',
+     },
+     { 
+      id:1,
+      value:'Approved',
+     },
+     { 
+      id:1,
+      value:'To be approved',
+     } ];
+
+  filterTags: string[] = ['test1', 'test2'];
+  filterSkills: string[] = ['test1', 'test2'];
   skills: Skill[] = [];
   tags: Tag[] = [];
-  
+  matCheckStatus: boolean = false;
+
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @Input()
-  itemsSelected: string[];
+  
+  
 
   constructor(private questionService: QuestionService,
     private dialog: MatDialog, private tagService: TagService, private skillService: SkillService) {
-      this.itemsSelected = ['test1', 'test2 selected','test2 selected','test2 selected','test2 selected' ];
   }
 
   public multiselectfield: Object = { text: 'name', value: 'id' };
@@ -72,7 +126,7 @@ export class QuestionsComponent implements OnInit {
       this.filteredType,
       this.filteredCats,
       this.filteredSubcats);
-      this.questionsSub = this.questionService
+    this.questionsSub = this.questionService
       .getQuestionUpdateListener()
       .subscribe((questionData: { questions: Question[]; questionCount: number }) => {
         this.totalQuestions = questionData.questionCount;
@@ -82,8 +136,8 @@ export class QuestionsComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.loadingData = false;
       });
-      this.loadTags();
-      this.loadSkills();
+    this.loadTags();
+    this.loadSkills();
   }
 
   ngAfterViewInit() {
@@ -91,7 +145,7 @@ export class QuestionsComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  
+
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -131,7 +185,7 @@ export class QuestionsComponent implements OnInit {
     });
   }
 
-  onDelete(quesId: string, quesName:string ) {
+  onDelete(quesId: string, quesName: string) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         message: 'Are you sure, you want to delete this question?',
@@ -150,13 +204,6 @@ export class QuestionsComponent implements OnInit {
     });
   }
 
-
-  removeFilterItem(item: string): void {
-    const index = this.itemsSelected.indexOf(item);
-    if (index >= 0) {
-      this.itemsSelected.splice(index, 1);
-    }
-  }
 
   loadSkills() {
     this.skillService.getSkills();
@@ -177,6 +224,49 @@ export class QuestionsComponent implements OnInit {
         this.tags = tagData.tags;
         this.filterTags = this.tags.map(a => a.tagName);
       });
+  }
+
+  onSearch = (value: string) => {
+    this.dataSource.filter = value.trim().toLocaleLowerCase();
+  }
+
+  onFilterChange(item, checked) { 
+    console.log(item);
+    item.checked = checked;
+  }
+
+  onFilterStatusChange(value) {
+      this.filterSelectedStatus = value;
+  }
+
+
+
+  onComplexityChange(value: string, checked: boolean) {
+    if (checked) {
+      console.log(value + " Checked");
+    } else {
+      console.log(value + " Unchecked");
+    }
+  }
+
+  onStatusChange(value: string) {
+    console.log(value + " Selected");
+  }
+
+  onTagChange(value: string, checked: boolean) {
+    if (checked) {
+      console.log(value + " Checked");
+    } else {
+      console.log(value + " Unchecked");
+    }
+  }
+
+  onSkillChange(value: string, checked: boolean) {
+    if (checked) {
+      console.log(value + " Checked");
+    } else {
+      console.log(value + " Unchecked");
+    }
   }
 
 } 

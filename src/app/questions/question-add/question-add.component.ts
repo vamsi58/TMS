@@ -2,7 +2,7 @@
 import { Subscription, Observable } from 'rxjs';
 import { Answer } from './../../models/answer.model';
 import { Question } from './../../models/question.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewEncapsulation } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { QuestionService } from './../../services/question.service';
@@ -19,7 +19,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-question-add',
   templateUrl: './question-add.component.html',
-  styleUrls: ['./question-add.component.css']
+  styleUrls: ['./question-add.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class QuestionAddComponent implements OnInit {
 

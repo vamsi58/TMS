@@ -50,13 +50,16 @@ margin-left: 2em;
 }
 
 .form-element-complexity{
-  width: 180px;
+  width: 165px;
   height: 40px;
 }
 
 .mat-button-toggle-checked {
-  background-color:#3F51B5;
-  color: #ffffff;
+  background-color:#3F51B5 !important;
+  color: #ffffff !important;
+}
+.mat-icon-button{
+  font-size:11px;
 }
 
 .question-editor, .answer-editor{
@@ -69,8 +72,14 @@ max-width: 70rem;
 }
 
 .custom-label{
+  margin-top: 1em;
   margin-left: 8px;
   font-size: 12px;
+}
+
+.mat-tab-label {
+    font-weight: 700;
+    font-size: 11px;
 }
 
 .answer-group{

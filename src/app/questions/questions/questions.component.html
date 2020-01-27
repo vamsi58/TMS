@@ -22,18 +22,35 @@
                 </div>
                 <div fxFlex="60">
                     <mat-chip-list #chipList>
-                        <mat-chip *ngFor="let item of itemsSelected" [selectable]="selectable" [removable]="true"
-                            (removed)="removeFilterItem(item)">
-                            {{item}}
+                        <div *ngFor="let item of filterTypes">
+                        <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
+                            (removed)="onFilterChange(item,false)">
+                            {{item.value}}
+                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                        </mat-chip>
+                        </div>
+                    </mat-chip-list>
+                    <mat-chip-list #chipList>
+                        <div *ngFor="let item of filterComplexities">
+                        <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
+                            (removed)="onFilterChange(item,false)">
+                            {{item.value}}
+                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                        </mat-chip>
+                        </div>
+                    </mat-chip-list>
+                     <mat-chip-list *ngIf="filterSelectedStatus != 'All'" #chipList>
+                        <mat-chip [selectable]="selectable" [removable]="true"
+                            (removed)="onFilterStatusChange('All')">
+                            {{filterSelectedStatus}}
                             <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
                         </mat-chip>
                     </mat-chip-list>
-
                 </div>
 
                 <div fxFlex="20">
                     <mat-form-field class="form-search" floatPlaceholder="never" appearance="outline" color="accent">
-                        <input matInput #filter placeholder="Search Questions">
+                        <input matInput #filter placeholder="Search Questions" (keyup)="onSearch($event.target.value)">
                         <mat-icon matPrefix>search</mat-icon>
                     </mat-form-field>
                 </div>
@@ -53,7 +70,7 @@
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="50" class="filter-item filter-questionType">
                                 <div *cdkVirtualFor="let type of filterTypes" class="type">
-                                    <mat-checkbox class="filter-type">{{type}}</mat-checkbox>
+                                    <mat-checkbox class="filter-type" [checked]="type.checked" [value]="type.value" #c (change)="onFilterChange(type,c.checked)">{{type.value}}</mat-checkbox>
                                 </div>
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
@@ -66,7 +83,7 @@
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="5" class="filter-item filter-questionComplexity">
                                 <div *cdkVirtualFor="let complexity of filterComplexities" class="type">
-                                    <mat-checkbox class="filter-type">{{complexity}}</mat-checkbox>
+                                    <mat-checkbox class="filter-type" [checked]="complexity.checked" [value]="complexity" #c (change)="onFilterChange(complexity,c.checked)">{{complexity.value}}</mat-checkbox>
                                 </div>
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
@@ -78,9 +95,9 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="5" class="filter-item filter-questionStatus">
-                                <mat-radio-group>
+                                <mat-radio-group >
                                     <div *cdkVirtualFor="let status of filterStatus" class="type">
-                                        <mat-radio-button class="filter-type" [value]="status">{{status}}
+                                        <mat-radio-button class="filter-type" [checked] = "status.value === filterSelectedStatus" [value]="status"  (change)="onFilterStatusChange(status.value)">{{status.value}}
                                         </mat-radio-button>
                                     </div>
                                 </mat-radio-group>
@@ -96,7 +113,7 @@
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="5" class="filter-item filter-questionComplexity">
                                 <div *cdkVirtualFor="let tag of filterTags" class="type">
-                                    <mat-checkbox class="filter-type">{{tag}}</mat-checkbox>
+                                    <mat-checkbox class="filter-type" [value]="tag" #c (change)="onTagChange(tag,c.checked)">{{tag}}</mat-checkbox>
                                 </div>
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
@@ -109,7 +126,7 @@
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="5" class="filter-item filter-questionComplexity">
                                 <div *cdkVirtualFor="let skill of filterSkills" class="type">
-                                    <mat-checkbox class="filter-type">{{skill}}</mat-checkbox>
+                                    <mat-checkbox class="filter-type" [value]="skill" #c (change)="onSkillChange(skill,c.checked)">{{skill}}</mat-checkbox>
                                 </div>
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
