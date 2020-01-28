@@ -8,11 +8,12 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatSort } from '@angular/material';
 import { state, style, trigger } from '@angular/animations';
-import { Tag } from './../../models/tag.model';
-import { Skill } from './../../models/skill.model';
+import { Tag,FilterTag } from './../../models/tag.model';
+import { Skill,FilterSkill } from './../../models/skill.model';
 import { SkillService } from './../../services/skill.service';
 import { TagService } from './../../services/tag.service';
 import { MatCheckboxModule } from '@angular/material';
+
 
 
 
@@ -44,6 +45,9 @@ export class QuestionsComponent implements OnInit {
   loadingData: boolean = true;
   //filterTypes = ['MCQ Single', 'MCQ Multiple', 'One Word', 'Descriptive'];
   filterSelectedStatus:string = "All";
+  quesType: boolean;
+  complexity: boolean;
+  filterValues: any = {};
   
   filterTypes = [
     { 
@@ -98,8 +102,8 @@ export class QuestionsComponent implements OnInit {
       value:'To be approved',
      } ];
 
-  filterTags: string[] = ['test1', 'test2'];
-  filterSkills: string[] = ['test1', 'test2'];
+  filterTags: FilterTag[];
+  filterSkills: FilterSkill[];
   skills: Skill[] = [];
   tags: Tag[] = [];
   matCheckStatus: boolean = false;
@@ -132,6 +136,14 @@ export class QuestionsComponent implements OnInit {
         this.totalQuestions = questionData.questionCount;
         this.questions = questionData.questions;
         this.dataSource = new MatTableDataSource<Question>(this.questions);
+
+        this.dataSource.filterPredicate = ((data: Question, filter: string): boolean => {
+      const filterValues = JSON.parse(filter);
+
+      return (this.quesType ? data.type.trim().toLowerCase() === filterValues.type : true) &&
+      (this.complexity ? data.complexity.trim().toLowerCase().indexOf(filterValues.complexity) !== -1 : true);
+    })
+
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.loadingData = false;
@@ -164,8 +176,6 @@ export class QuestionsComponent implements OnInit {
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
-
-
 
   onMouseOver(row) {
     const id = row.id;
@@ -211,8 +221,8 @@ export class QuestionsComponent implements OnInit {
       .getSkillUpdateListener()
       .subscribe((skillData: { skills: Skill[]; }) => {
         this.skills = skillData.skills;
-        this.filterSkills = this.skills.map(a => a.skillName);
-        console.log("loaded now");
+        this.filterSkills = this.skills.map(a => new FilterSkill(a));
+        console.log(this.filterSkills);
       });
   }
 
@@ -222,7 +232,7 @@ export class QuestionsComponent implements OnInit {
       .getTagUpdateListener()
       .subscribe((tagData: { tags: Tag[]; }) => {
         this.tags = tagData.tags;
-        this.filterTags = this.tags.map(a => a.tagName);
+        this.filterTags = this.tags.map(a => new FilterTag(a));
       });
   }
 
@@ -231,42 +241,24 @@ export class QuestionsComponent implements OnInit {
   }
 
   onFilterChange(item, checked) { 
-    console.log(item);
     item.checked = checked;
+    console.log(this.filterSkills[0]);
+    for (let type of this.filterTypes){
+      this.applyFilter('type', this.quesType ? item.value: '')
+    }
   }
 
   onFilterStatusChange(value) {
       this.filterSelectedStatus = value;
   }
 
-
-
-  onComplexityChange(value: string, checked: boolean) {
-    if (checked) {
-      console.log(value + " Checked");
-    } else {
-      console.log(value + " Unchecked");
+  applyFilter(column: string, filterValue: string) {
+    this.filterValues[column] = filterValue;
+    this.dataSource.filter = JSON.stringify(this.filterValues);
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
   }
 
-  onStatusChange(value: string) {
-    console.log(value + " Selected");
-  }
-
-  onTagChange(value: string, checked: boolean) {
-    if (checked) {
-      console.log(value + " Checked");
-    } else {
-      console.log(value + " Unchecked");
-    }
-  }
-
-  onSkillChange(value: string, checked: boolean) {
-    if (checked) {
-      console.log(value + " Checked");
-    } else {
-      console.log(value + " Unchecked");
-    }
-  }
 
 } 

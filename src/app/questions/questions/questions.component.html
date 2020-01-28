@@ -39,6 +39,24 @@
                         </mat-chip>
                         </div>
                     </mat-chip-list>
+                     <mat-chip-list #chipList>
+                        <div *ngFor="let item of filterTags">
+                        <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
+                            (removed)="onFilterChange(item,false)">
+                            {{item.value}}
+                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                        </mat-chip>
+                        </div>
+                    </mat-chip-list>
+                     <mat-chip-list #chipList>
+                        <div *ngFor="let item of filterSkills">
+                        <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
+                            (removed)="onFilterChange(item,false)">
+                            {{item.value}}
+                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                        </mat-chip>
+                        </div>
+                    </mat-chip-list>
                      <mat-chip-list *ngIf="filterSelectedStatus != 'All'" #chipList>
                         <mat-chip [selectable]="selectable" [removable]="true"
                             (removed)="onFilterStatusChange('All')">
@@ -113,7 +131,7 @@
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="5" class="filter-item filter-questionComplexity">
                                 <div *cdkVirtualFor="let tag of filterTags" class="type">
-                                    <mat-checkbox class="filter-type" [value]="tag" #c (change)="onTagChange(tag,c.checked)">{{tag}}</mat-checkbox>
+                                    <mat-checkbox class="filter-type" [checked]="tag.checked" [value]="tag.value" #c (change)="onFilterChange(tag,c.checked)">{{tag.value}}</mat-checkbox>
                                 </div>
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
@@ -126,7 +144,7 @@
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="5" class="filter-item filter-questionComplexity">
                                 <div *cdkVirtualFor="let skill of filterSkills" class="type">
-                                    <mat-checkbox class="filter-type" [value]="skill" #c (change)="onSkillChange(skill,c.checked)">{{skill}}</mat-checkbox>
+                                    <mat-checkbox class="filter-type" [checked]="skill.checked" [value]="skill.value" #c (change)="onFilterChange(skill,c.checked)">{{skill.value}}</mat-checkbox>
                                 </div>
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
