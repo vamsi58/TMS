@@ -23,6 +23,31 @@
       <div>{{question.descAnswer}}</div>
     </section>
 
+    <section class="answer-section">
+      <mat-label class="mat-subheading-1">Type:</mat-label>
+      <div>{{question.type}}</div>
+    </section>
+
+    <section class="answer-section">
+      <mat-label class="mat-subheading-1">Complexity:</mat-label>
+      <div>{{question.complexity}}</div>
+    </section>
+
+    <section class="answer-section">
+      <mat-label class="mat-subheading-1">Status:</mat-label>
+      <div>{{question.status}}</div>
+    </section>
+
+    <section class="answer-section">
+      <mat-label  class="mat-subheading-1">Tags:</mat-label>
+      <div *ngFor = "let tag of question.tags">{{tag}}</div>
+    </section>
+
+    <section class="answer-section">
+      <mat-label  class="mat-subheading-1">Skills:</mat-label>
+      <div *ngFor = "let skill of question.skills">{{skill}}</div>
+    </section>
+
     <section>
       <mat-label class="mat-subheading-1">Created By:</mat-label>
       <div>{{question.createdBy}}</div>

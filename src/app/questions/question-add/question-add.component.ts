@@ -335,11 +335,11 @@ export class QuestionAddComponent implements OnInit {
     console.log("this is comment"+ this.currentMode);
     if (this.currentMode === "edit") {
       this.questionService.updateQuestion(this.editQuestion.id, this.formGroup.get('type').value, this.formGroup.get('tags').value, this.formGroup.get('skills').value, questionText, this.formGroup.get('stmtHtml').value, this.formGroup.get('options').value,
-        this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
+        this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'to be approved', this.formGroup.get('complexity').value, currentUser, "", "");
     }
     else {
       this.questionService.createQuestion('dummyid', this.formGroup.get('type').value, this.formGroup.get('tags').value, this.formGroup.get('skills').value, questionText, this.formGroup.get('stmtHtml').value, this.formGroup.get('options').value,
-        this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'created', this.formGroup.get('complexity').value, currentUser, "", "");
+        this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'to be approved', this.formGroup.get('complexity').value, currentUser, "", "");
     }
   }
 }

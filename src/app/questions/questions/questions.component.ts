@@ -7,12 +7,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatSort } from '@angular/material';
-import { state, style, trigger } from '@angular/animations';
-import { Tag,FilterTag } from './../../models/tag.model';
-import { Skill,FilterSkill } from './../../models/skill.model';
+import { Tag, FilterTag } from './../../models/tag.model';
+import { Skill, FilterSkill } from './../../models/skill.model';
 import { SkillService } from './../../services/skill.service';
 import { TagService } from './../../services/tag.service';
-import { MatCheckboxModule } from '@angular/material';
 
 
 
@@ -33,74 +31,72 @@ export class QuestionsComponent implements OnInit {
   currentPage = 1;
   pageSizeOptions = [1, 2, 5, 10];
   private questionsSub: Subscription;
-  private _filterQuestion: string;
   private filteredType: string;
   private filteredCats: string[];
   private filteredSubcats: string[];
   questions: Question[] = [];
-  //displayedColumns = ['select', 'id', 'stmt', 'actions'];
+  filteredQuestions: Question[] = [];
   displayedColumns = ['id', 'stmt', 'actions'];
   dataSource = new MatTableDataSource<Question>(this.questions);
   selection = new SelectionModel<Question>(true, []);
   loadingData: boolean = true;
-  //filterTypes = ['MCQ Single', 'MCQ Multiple', 'One Word', 'Descriptive'];
-  filterSelectedStatus:string = "All";
+  filterSelectedStatus: string = "All";
   quesType: boolean;
   complexity: boolean;
   filterValues: any = {};
-  
+
   filterTypes = [
-    { 
-      id:1,
-      value:'MCQ Single',
-      checked:false
-     },
-     { 
-      id:1,
-      value:'MCQ Multiple',
-      checked:false
-     },
-     { 
-      id:1,
-      value:'One Word',
-      checked:false
-     },
-     { 
-      id:1,
-      value:'Descriptive',
-      checked:false
-     } ];
+    {
+      id: 1,
+      value: 'MCQ Single',
+      checked: false
+    },
+    {
+      id: 1,
+      value: 'MCQ Multiple',
+      checked: false
+    },
+    {
+      id: 1,
+      value: 'One Word',
+      checked: false
+    },
+    {
+      id: 1,
+      value: 'Descriptive',
+      checked: false
+    }];
 
   filterComplexities = [
-    { 
-      id:1,
-      value:'High',
-      checked:false
-     },
-     { 
-      id:1,
-      value:'Medium',
-      checked:false
-     },
-     { 
-      id:1,
-      value:'Low',
-      checked:false
-     } ];
+    {
+      id: 1,
+      value: 'High',
+      checked: false
+    },
+    {
+      id: 1,
+      value: 'Medium',
+      checked: false
+    },
+    {
+      id: 1,
+      value: 'Low',
+      checked: false
+    }];
 
   filterStatus = [
-    { 
-      id:1,
-      value:'All',
-     },
-     { 
-      id:1,
-      value:'Approved',
-     },
-     { 
-      id:1,
-      value:'To be approved',
-     } ];
+    {
+      id: 1,
+      value: 'All',
+    },
+    {
+      id: 1,
+      value: 'Approved',
+    },
+    {
+      id: 1,
+      value: 'To be approved',
+    }];
 
   filterTags: FilterTag[];
   filterSkills: FilterSkill[];
@@ -111,8 +107,8 @@ export class QuestionsComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  
-  
+
+
 
   constructor(private questionService: QuestionService,
     private dialog: MatDialog, private tagService: TagService, private skillService: SkillService) {
@@ -135,15 +131,8 @@ export class QuestionsComponent implements OnInit {
       .subscribe((questionData: { questions: Question[]; questionCount: number }) => {
         this.totalQuestions = questionData.questionCount;
         this.questions = questionData.questions;
-        this.dataSource = new MatTableDataSource<Question>(this.questions);
-
-        this.dataSource.filterPredicate = ((data: Question, filter: string): boolean => {
-      const filterValues = JSON.parse(filter);
-
-      return (this.quesType ? data.type.trim().toLowerCase() === filterValues.type : true) &&
-      (this.complexity ? data.complexity.trim().toLowerCase().indexOf(filterValues.complexity) !== -1 : true);
-    })
-
+        this.filteredQuestions = this.questions;
+        this.dataSource = new MatTableDataSource<Question>(this.filteredQuestions);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.loadingData = false;
@@ -222,7 +211,6 @@ export class QuestionsComponent implements OnInit {
       .subscribe((skillData: { skills: Skill[]; }) => {
         this.skills = skillData.skills;
         this.filterSkills = this.skills.map(a => new FilterSkill(a));
-        console.log(this.filterSkills);
       });
   }
 
@@ -240,25 +228,85 @@ export class QuestionsComponent implements OnInit {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
 
-  onFilterChange(item, checked) { 
+  onFilterChange(item, checked) {
     item.checked = checked;
-    console.log(this.filterSkills[0]);
-    for (let type of this.filterTypes){
-      this.applyFilter('type', this.quesType ? item.value: '')
-    }
+    this.applyFilter();
   }
 
   onFilterStatusChange(value) {
-      this.filterSelectedStatus = value;
+    this.filterSelectedStatus = value;
+    this.applyFilter();
   }
 
-  applyFilter(column: string, filterValue: string) {
-    this.filterValues[column] = filterValue;
-    this.dataSource.filter = JSON.stringify(this.filterValues);
+  applyFilter(){
+    this.filteredQuestions = this.questions;
+    this.filteredQuestions = this.filteredQuestions.filter(question => {
+      let noSelection = true;
+      let selected = false;
+      for (let type of this.filterTypes) {
+        if (type.checked) {
+          if (question.type == type.value) {
+            selected = true;
+          }
+          noSelection = false;
+        }
+      }
+      if (!noSelection && !selected){
+        return false;
+      } else {
+        noSelection = true;
+        selected = false;
+      }
+      for (let complexity of this.filterComplexities) {
+        if (complexity.checked) {
+          if (question.complexity == complexity.value.toLowerCase()) {
+            selected = true;
+          }
+          noSelection = false;
+        }
+      }
+      if (!noSelection && !selected){
+        return false;
+      } else {
+        noSelection = true;
+        selected = false;
+      }
+      if (this.filterSelectedStatus!=='All' && question.status !== this.filterSelectedStatus.toLowerCase()){
+         return false;
+      }
+      for (let tag of this.filterTags) {
+        if (tag.checked) {
+          if ((question.tags.filter(t => t == tag.value)).length > 0) {
+            selected = true;
+          }
+          noSelection = false;
+        }
+      }
+      if (!noSelection && !selected){
+        return false;
+      } else {
+        noSelection = true;
+        selected = false;
+      }
+      for (let skill of this.filterSkills) {
+        if (skill.checked) {
+          if ((question.skills.filter(s => s == skill.value)).length > 0) {
+            selected = true;
+          }
+          noSelection = false;
+        }
+      }
+      if (!noSelection && !selected){
+        return false;
+      } else {
+        return true;
+      }
+    });
+
+    this.dataSource = new MatTableDataSource<Question>(this.filteredQuestions);
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
-
 
 } 

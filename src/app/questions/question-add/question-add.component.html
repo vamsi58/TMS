@@ -62,13 +62,13 @@
                         {{getError('answer')}}
                       </mat-error>
                     </mat-form-field>
-                    <button type="button" mat-icon-button color="warn" class="form-elemnt-delete mat-small"
+                    <button *ngIf="i!==0 &&i!==1" type="button" mat-icon-button color="warn" class="form-elemnt-delete mat-small"
                       (click)="deleteOption(i)">
                       <mat-icon class="add-icon">close</mat-icon>
                     </button>
                     <button *ngIf="formGroup.get('options').length==(i+1)" class="add-button mat-small" type="button"
-                      mat-stroked-button color="primary" (click)="addNewOption()">
-                      <mat-icon class="add-icon">add</mat-icon>New
+                      mat-icon-button color="primary" (click)="addNewOption()">
+                      <mat-icon class="add-icon">add</mat-icon>Add Option
                     </button>
                   </div>
                 </div>
@@ -92,7 +92,7 @@
                         {{getError('answer')}}
                       </mat-error>
                     </mat-form-field>
-                    <button type="button" mat-icon-button color="warn" class="form-elemnt-delete mat-small"
+                    <button *ngIf="i!==0 &&i!==1" type="button" mat-icon-button color="warn" class="form-elemnt-delete mat-small"
                       (click)="deleteOption(i)">
                       <mat-icon class="add-icon">close</mat-icon>
                     </button>

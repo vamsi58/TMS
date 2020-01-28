@@ -23,43 +23,42 @@
                 <div fxFlex="60">
                     <mat-chip-list #chipList>
                         <div *ngFor="let item of filterTypes">
-                        <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
-                            (removed)="onFilterChange(item,false)">
-                            {{item.value}}
-                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
-                        </mat-chip>
+                            <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
+                                (removed)="onFilterChange(item,false)">
+                                {{item.value}}
+                                <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                            </mat-chip>
                         </div>
                     </mat-chip-list>
                     <mat-chip-list #chipList>
                         <div *ngFor="let item of filterComplexities">
-                        <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
-                            (removed)="onFilterChange(item,false)">
-                            {{item.value}}
-                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
-                        </mat-chip>
+                            <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
+                                (removed)="onFilterChange(item,false)">
+                                {{item.value}}
+                                <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                            </mat-chip>
                         </div>
                     </mat-chip-list>
-                     <mat-chip-list #chipList>
+                    <mat-chip-list #chipList>
                         <div *ngFor="let item of filterTags">
-                        <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
-                            (removed)="onFilterChange(item,false)">
-                            {{item.value}}
-                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
-                        </mat-chip>
+                            <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
+                                (removed)="onFilterChange(item,false)">
+                                {{item.value}}
+                                <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                            </mat-chip>
                         </div>
                     </mat-chip-list>
-                     <mat-chip-list #chipList>
+                    <mat-chip-list #chipList>
                         <div *ngFor="let item of filterSkills">
-                        <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
-                            (removed)="onFilterChange(item,false)">
-                            {{item.value}}
-                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
-                        </mat-chip>
+                            <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
+                                (removed)="onFilterChange(item,false)">
+                                {{item.value}}
+                                <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                            </mat-chip>
                         </div>
                     </mat-chip-list>
-                     <mat-chip-list *ngIf="filterSelectedStatus != 'All'" #chipList>
-                        <mat-chip [selectable]="selectable" [removable]="true"
-                            (removed)="onFilterStatusChange('All')">
+                    <mat-chip-list *ngIf="filterSelectedStatus != 'All'" #chipList>
+                        <mat-chip [selectable]="selectable" [removable]="true" (removed)="onFilterStatusChange('All')">
                             {{filterSelectedStatus}}
                             <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
                         </mat-chip>
@@ -67,15 +66,13 @@
                 </div>
 
                 <div fxFlex="20">
-                    <mat-form-field class="form-search" floatPlaceholder="never" appearance="outline" color="accent">
+                    <mat-form-field class="form-search" floatPlaceholder="never" appearance="outline">
                         <input matInput #filter placeholder="Search Questions" (keyup)="onSearch($event.target.value)">
                         <mat-icon matPrefix>search</mat-icon>
                     </mat-form-field>
                 </div>
-
             </div>
             <mat-divider> </mat-divider>
-
 
             <div fxLayout="row" fxLayout.xs="column" fxFlexFill>
                 <div fxFlex="20">
@@ -88,7 +85,8 @@
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="50" class="filter-item filter-questionType">
                                 <div *cdkVirtualFor="let type of filterTypes" class="type">
-                                    <mat-checkbox class="filter-type" [checked]="type.checked" [value]="type.value" #c (change)="onFilterChange(type,c.checked)">{{type.value}}</mat-checkbox>
+                                    <mat-checkbox class="filter-type" [checked]="type.checked" [value]="type.value" #c
+                                        (change)="onFilterChange(type,c.checked)">{{type.value}}</mat-checkbox>
                                 </div>
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
@@ -101,7 +99,9 @@
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="5" class="filter-item filter-questionComplexity">
                                 <div *cdkVirtualFor="let complexity of filterComplexities" class="type">
-                                    <mat-checkbox class="filter-type" [checked]="complexity.checked" [value]="complexity" #c (change)="onFilterChange(complexity,c.checked)">{{complexity.value}}</mat-checkbox>
+                                    <mat-checkbox class="filter-type" [checked]="complexity.checked"
+                                        [value]="complexity" #c (change)="onFilterChange(complexity,c.checked)">
+                                        {{complexity.value}}</mat-checkbox>
                                 </div>
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
@@ -113,9 +113,11 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="5" class="filter-item filter-questionStatus">
-                                <mat-radio-group >
+                                <mat-radio-group>
                                     <div *cdkVirtualFor="let status of filterStatus" class="type">
-                                        <mat-radio-button class="filter-type" [checked] = "status.value === filterSelectedStatus" [value]="status"  (change)="onFilterStatusChange(status.value)">{{status.value}}
+                                        <mat-radio-button class="filter-type"
+                                            [checked]="status.value === filterSelectedStatus" [value]="status"
+                                            (change)="onFilterStatusChange(status.value)">{{status.value}}
                                         </mat-radio-button>
                                     </div>
                                 </mat-radio-group>
@@ -131,7 +133,8 @@
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="5" class="filter-item filter-questionComplexity">
                                 <div *cdkVirtualFor="let tag of filterTags" class="type">
-                                    <mat-checkbox class="filter-type" [checked]="tag.checked" [value]="tag.value" #c (change)="onFilterChange(tag,c.checked)">{{tag.value}}</mat-checkbox>
+                                    <mat-checkbox class="filter-type" [checked]="tag.checked" [value]="tag.value" #c
+                                        (change)="onFilterChange(tag,c.checked)">{{tag.value}}</mat-checkbox>
                                 </div>
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
@@ -144,7 +147,8 @@
                             </mat-expansion-panel-header>
                             <cdk-virtual-scroll-viewport itemSize="5" class="filter-item filter-questionComplexity">
                                 <div *cdkVirtualFor="let skill of filterSkills" class="type">
-                                    <mat-checkbox class="filter-type" [checked]="skill.checked" [value]="skill.value" #c (change)="onFilterChange(skill,c.checked)">{{skill.value}}</mat-checkbox>
+                                    <mat-checkbox class="filter-type" [checked]="skill.checked" [value]="skill.value" #c
+                                        (change)="onFilterChange(skill,c.checked)">{{skill.value}}</mat-checkbox>
                                 </div>
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
@@ -172,7 +176,13 @@
 
                         <ng-container matColumnDef="stmt">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Question</mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.stmt}}</mat-cell>
+                            <mat-cell *matCellDef="let row">
+                                <div style="word-wrap: break-word;">
+                                    <p class="mat-body-1">{{row.stmt}} </p>
+                               <p class="mat-caption">Type:{{row.type}} Complexity: {{row.complexity}} Status: {{row.status}}</p>
+                                
+                            </div>
+                            </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="actions">
