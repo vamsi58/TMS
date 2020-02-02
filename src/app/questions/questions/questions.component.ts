@@ -1,7 +1,7 @@
 import { ConfirmDialogComponent } from './../../confirm-dialog/confirm-dialog.component';
 import { Question } from './../../models/question.model';
 import { QuestionService } from './../../services/question.service';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Subscription } from "rxjs";
 import { MatDialog } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -14,11 +14,11 @@ import { TagService } from './../../services/tag.service';
 
 
 
-
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.component.html',
-  styleUrls: ['./questions.component.css']
+  styleUrls: ['./questions.component.css'],
+  // encapsulation: ViewEncapsulation.None
 })
 export class QuestionsComponent implements OnInit {
   oDoc;
@@ -36,14 +36,16 @@ export class QuestionsComponent implements OnInit {
   private filteredSubcats: string[];
   questions: Question[] = [];
   filteredQuestions: Question[] = [];
-  displayedColumns = ['id', 'stmt', 'actions'];
+  displayedColumns = ['id', 'stmt','select'];
   dataSource = new MatTableDataSource<Question>(this.questions);
   selection = new SelectionModel<Question>(true, []);
   loadingData: boolean = true;
   filterSelectedStatus: string = "All";
+  filterItemCount:number = 0;
   quesType: boolean;
   complexity: boolean;
   filterValues: any = {};
+  searchField;
 
   filterTypes = [
     {
@@ -104,11 +106,24 @@ export class QuestionsComponent implements OnInit {
   tags: Tag[] = [];
   matCheckStatus: boolean = false;
 
+  private paginator: MatPaginator;
+  private sort: MatSort;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  @ViewChild(MatSort,{ static: true }) set matSort(ms: MatSort) {
+    this.sort = ms;
+    this.setDataSourceAttributes();
+  }
 
+  @ViewChild(MatPaginator,{ static: true }) set matPaginator(mp: MatPaginator) {
+    this.paginator = mp;
+    this.setDataSourceAttributes();
+  }
+
+  setDataSourceAttributes() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
   constructor(private questionService: QuestionService,
     private dialog: MatDialog, private tagService: TagService, private skillService: SkillService) {
@@ -133,17 +148,15 @@ export class QuestionsComponent implements OnInit {
         this.questions = questionData.questions;
         this.filteredQuestions = this.questions;
         this.dataSource = new MatTableDataSource<Question>(this.filteredQuestions);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
         this.loadingData = false;
+        this.setDataSourceAttributes();
       });
     this.loadTags();
     this.loadSkills();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // this.setDataSourceAttributes();
   }
 
 
@@ -203,7 +216,6 @@ export class QuestionsComponent implements OnInit {
     });
   }
 
-
   loadSkills() {
     this.skillService.getSkills();
     this.skillService
@@ -230,11 +242,23 @@ export class QuestionsComponent implements OnInit {
 
   onFilterChange(item, checked) {
     item.checked = checked;
+    if (checked){
+       this.filterItemCount+=1;
+    }
+    else{
+      this.filterItemCount-=1;
+    }
     this.applyFilter();
   }
 
   onFilterStatusChange(value) {
     this.filterSelectedStatus = value;
+    if (value!=="All"){
+      this.filterItemCount+=1;
+   }
+   else{
+     this.filterItemCount-=1;
+   }
     this.applyFilter();
   }
 
@@ -304,9 +328,31 @@ export class QuestionsComponent implements OnInit {
     });
 
     this.dataSource = new MatTableDataSource<Question>(this.filteredQuestions);
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    this.setDataSourceAttributes();
+  }
+
+  clearAllFilters(){
+    for (let item of this.filterTypes){
+      item.checked = false;
     }
+    for (let item of this.filterComplexities){
+      item.checked = false;
+    }
+    for (let item of this.filterTags){
+      item.checked = false;
+    }
+    for (let item of this.filterSkills){
+      item.checked = false;
+    }
+    this.filterItemCount = 0;
+    this.filterSelectedStatus = "All";
+    this.dataSource = new MatTableDataSource<Question>(this.questions);
+    this.setDataSourceAttributes();
+  }
+
+  clearSearchField() {
+    this.searchField = '';
+    this.dataSource.filter = '';
   }
 
 } 

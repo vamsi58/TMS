@@ -1,19 +1,17 @@
-<div *ngIf="!loadingData; else loading" class="question-div">
+<div class="question-div">
     <mat-card [ngClass]="'mat-elevation-z8'">
         <mat-card-header>
             <mat-card-title>
-                Questions
+                Question Bank
             </mat-card-title>
             <div class="fill"></div>
-            <button mat-button color="primary" routerLink="/add-question">
+            <button mat-button color="primary" class="add-button" routerLink="/add-question">
                 <mat-icon>add</mat-icon>
-                New Question
+                Add Question
             </button>
         </mat-card-header>
         <mat-divider></mat-divider>
-
         <mat-card-content>
-
             <div fxLayout="row" fxLayout.xs="column" fxFlexFill class="search-section">
                 <div class="filter-headline" fxFlex="20">
                     <button mat-icon-button disabled class="filter-button">
@@ -22,62 +20,66 @@
                 </div>
                 <div fxFlex="60">
                     <mat-chip-list #chipList>
-                        <div *ngFor="let item of filterTypes">
-                            <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
-                                (removed)="onFilterChange(item,false)">
+                        <div *ngFor="let item of filterTypes,filterComplexities">
+                            <mat-chip class="chips-selected" *ngIf="item.checked" [selectable]="selectable"
+                                [removable]="true" (removed)="onFilterChange(item,false)">
                                 {{item.value}}
-                                <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                                <hr flex />
+                                <mat-icon matChipRemove *ngIf="true">clear</mat-icon>
                             </mat-chip>
                         </div>
-                    </mat-chip-list>
-                    <mat-chip-list #chipList>
                         <div *ngFor="let item of filterComplexities">
-                            <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
-                                (removed)="onFilterChange(item,false)">
+                            <mat-chip class="chips-selected" *ngIf="item.checked" [selectable]="selectable"
+                                [removable]="true" (removed)="onFilterChange(item,false)">
                                 {{item.value}}
-                                <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                                <mat-icon matChipRemove *ngIf="true">clear</mat-icon>
                             </mat-chip>
                         </div>
-                    </mat-chip-list>
-                    <mat-chip-list #chipList>
                         <div *ngFor="let item of filterTags">
-                            <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
-                                (removed)="onFilterChange(item,false)">
+                            <mat-chip class="chips-selected" *ngIf="item.checked" [selectable]="selectable"
+                                [removable]="true" (removed)="onFilterChange(item,false)">
                                 {{item.value}}
-                                <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                                <mat-icon matChipRemove *ngIf="true">clear</mat-icon>
                             </mat-chip>
                         </div>
-                    </mat-chip-list>
-                    <mat-chip-list #chipList>
                         <div *ngFor="let item of filterSkills">
-                            <mat-chip *ngIf="item.checked" [selectable]="selectable" [removable]="true"
-                                (removed)="onFilterChange(item,false)">
+                            <mat-chip class="chips-selected" *ngIf="item.checked" [selectable]="selectable"
+                                [removable]="true" (removed)="onFilterChange(item,false)">
                                 {{item.value}}
-                                <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                                <mat-icon matChipRemove *ngIf="true">clear</mat-icon>
                             </mat-chip>
                         </div>
-                    </mat-chip-list>
-                    <mat-chip-list *ngIf="filterSelectedStatus != 'All'" #chipList>
-                        <mat-chip [selectable]="selectable" [removable]="true" (removed)="onFilterStatusChange('All')">
-                            {{filterSelectedStatus}}
-                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                        <div *ngIf="filterSelectedStatus != 'All'">
+                            <mat-chip class="chips-selected" [selectable]="selectable" [removable]="true"
+                                (removed)="onFilterStatusChange('All')">
+                                {{filterSelectedStatus}}
+                                <mat-icon matChipRemove *ngIf="true">clear</mat-icon>
+                            </mat-chip>
+                        </div>
+                        <mat-chip *ngIf="filterItemCount > 1" class="clear-label" (click)="clearAllFilters()"
+                            [selectable]="selectable">
+                            <u>
+                                <mat-label color="primary">Clear all</mat-label>
+                            </u>
                         </mat-chip>
                     </mat-chip-list>
                 </div>
-
                 <div fxFlex="20">
                     <mat-form-field class="form-search" floatPlaceholder="never" appearance="outline">
-                        <input matInput #filter placeholder="Search Questions" (keyup)="onSearch($event.target.value)">
-                        <mat-icon matPrefix>search</mat-icon>
+                        <input [(ngModel)]="searchField" matInput #filter placeholder="Search Questions"
+                            (keyup)="onSearch($event.target.value)">
+                        <mat-icon matSuffix *ngIf="!searchField">search</mat-icon>
+                        <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="searchField">
+                            <mat-icon>close</mat-icon>
+                        </button>
                     </mat-form-field>
                 </div>
             </div>
             <mat-divider> </mat-divider>
-
             <div fxLayout="row" fxLayout.xs="column" fxFlexFill>
                 <div fxFlex="20">
                     <mat-accordion class="filter-panel">
-                        <mat-expansion-panel [ngClass]="'mat-elevation-z0'">
+                        <mat-expansion-panel [ngClass]="'mat-elevation-z0'" [expanded]="true">
                             <mat-expansion-panel-header>
                                 <mat-panel-title class="mat-title">
                                     Type
@@ -124,7 +126,6 @@
                             </cdk-virtual-scroll-viewport>
                         </mat-expansion-panel>
                         <mat-divider [inset]="true"></mat-divider>
-
                         <mat-expansion-panel [ngClass]="'mat-elevation-z0'">
                             <mat-expansion-panel-header>
                                 <mat-panel-title class="mat-title">
@@ -155,10 +156,20 @@
                     </mat-accordion>
                 </div>
                 <div fxFlex="80" [ngClass]="'mat-elevation-z4'">
-                    <mat-table #table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc"
-                        matclass="mat-cell">
-                        <!-- <ng-container matColumnDef="select">
+                    <mat-table *ngIf="!loadingData" #table [dataSource]="dataSource" matSort matSortActive="id"
+                        matSortDirection="desc" matclass="mat-cell">
+                        <ng-container matColumnDef="select">
                             <mat-header-cell *matHeaderCellDef>
+                                <div class="fill"></div>
+                                <div class="more_vert">
+                                    <mat-menu #appMenu="matMenu">
+                                        <button mat-menu-item>Approve</button>
+                                        <button mat-menu-item>Delete</button>
+                                    </mat-menu>
+                                    <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </div>
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row">
                                 <mat-checkbox (click)="$event.stopPropagation()"
@@ -167,67 +178,72 @@
                                     [style.opacity]="row.show || selection.isSelected(row) ? 100 : 0">
                                 </mat-checkbox>
                             </mat-cell>
-                        </ng-container> -->
-
+                        </ng-container>
                         <ng-container matColumnDef="id" class="mat-column">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
                             <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
                         </ng-container>
-
                         <ng-container matColumnDef="stmt">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Question</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef>Question</mat-header-cell>
                             <mat-cell *matCellDef="let row">
-                                <div style="word-wrap: break-word;">
+                                <div class="question-stmt">
+                                    <mat-chip-list>
+                                        <div *ngFor="let tag of row.tags">
+                                            <mat-chip>#{{tag}}</mat-chip>
+                                        </div>
+                                        <div *ngFor="let skill of row.skills">
+                                            <mat-chip>#{{skill}}</mat-chip>
+                                        </div>
+                                        <mat-chip>#{{row.type}}</mat-chip>
+                                        <mat-chip>#{{row.complexity}} complex</mat-chip>
+                                        <mat-chip>
+                                            <!-- <mat-icon color="warn">check</mat-icon> -->
+                                            <!-- {{row.status}} -->
+                                            Not Approved
+                                        </mat-chip>
+                                    </mat-chip-list>
                                     <p class="mat-body-1">{{row.stmt}} </p>
-                               <p class="mat-caption">Type:{{row.type}} Complexity: {{row.complexity}} Status: {{row.status}}</p>
-                                
-                            </div>
+                                    <button mat-icon-button class="action-bar"
+                                        (click)="onApprove(row.id, row.stmt)" matTooltipPosition="below"
+                                        matTooltip="Approve Question">
+                                        <mat-icon class="action-button" aria-label="Delete">check</mat-icon>
+                                    </button>
+                                    <button mat-icon-button class="action-bar"
+                                        [routerLink]="['/view-question', row.id]" matTooltip="Detailed View"
+                                        matTooltipPosition="below">
+                                        <mat-icon class="action-button" aria-label="View">open_in_new</mat-icon>
+                                    </button>
+                                    <button mat-icon-button class="action-bar"
+                                        [routerLink]="['/edit-question', row.id]" matTooltip="Edit Question"
+                                        matTooltipPosition="below">
+                                        <mat-icon class="action-button" aria-label="Edit">edit</mat-icon> 
+                                    </button>
+                                    <button mat-icon-button class="action-bar"
+                                        (click)="onDelete(row.id, row.stmt)" matTooltip="Delete Question"
+                                        matTooltipPosition="below">
+                                        <mat-icon class="action-button" aria-label="Delete">delete</mat-icon>
+                                    </button>
+
+                                </div>
                             </mat-cell>
                         </ng-container>
-
-                        <ng-container matColumnDef="actions">
-                            <mat-header-cell *matHeaderCellDef>
-                            </mat-header-cell>
-
-                            <mat-cell *matCellDef="let row; let i=index;">
-                                <button mat-icon-button
-                                    [style.opacity]="row.show || selection.isSelected(row) ? 100 : 0"
-                                    [routerLink]="['/view-question', row.id]">
-                                    <mat-icon aria-label="View">open_in_new</mat-icon>
-                                </button>
-                                <button mat-icon-button
-                                    [style.opacity]="row.show || selection.isSelected(row) ? 100 : 0"
-                                    [routerLink]="['/edit-question', row.id]">
-                                    <mat-icon aria-label="Edit">edit</mat-icon>
-                                </button>
-
-                                <button mat-icon-button
-                                    [style.opacity]="row.show || selection.isSelected(row) ? 100 : 0"
-                                    (click)="onDelete(row.id, row.stmt)">
-                                    <mat-icon aria-label="Delete">delete</mat-icon>
-                                </button>
-                            </mat-cell>
-                        </ng-container>
-
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
                         <mat-row *matRowDef="let row; columns: displayedColumns;" (mouseover)="onMouseOver(row)"
                             (mouseleave)="onMouseLeave(row)">
                         </mat-row>
                     </mat-table>
+
+                    <div class="progress-spinner" *ngIf="loadingData">
+                        <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
+                        </mat-progress-spinner>
+                    </div>
+
                     <div fxLayout="row" class="control-layout">
                         <mat-paginator [pageSizeOptions]="[5, 10, 15, 20, 50, 100]" showFirstLastButtons>
                         </mat-paginator>
                     </div>
                 </div>
-
             </div>
         </mat-card-content>
     </mat-card>
 </div>
-<ng-template #loading>
-    <div class="progress-spinner">
-        <mat-progress-spinner diameter=50 mode="indeterminate" color="accent">
-        </mat-progress-spinner>
-    </div>
-</ng-template>

@@ -10,7 +10,7 @@ import {AuthService} from '../services/auth.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  sidenavWidth = 4;
+  sidenavWidth = 3;
   ngStyle: string;
   public positionOptions: TooltipPosition[] = ['left'];   
   public position = new FormControl(this.positionOptions[0]);  
@@ -22,10 +22,10 @@ export class NavbarComponent implements OnInit {
   }
 
   increase() {
-    this.sidenavWidth = 10;
+    this.sidenavWidth = 11;
   }
   decrease() {
-    this.sidenavWidth = 4;
+    this.sidenavWidth = 3;
   }
 
   onLogout() {

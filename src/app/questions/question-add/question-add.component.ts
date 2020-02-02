@@ -20,7 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   selector: 'app-question-add',
   templateUrl: './question-add.component.html',
   styleUrls: ['./question-add.component.css'],
-  encapsulation: ViewEncapsulation.None
+  // encapsulation: ViewEncapsulation.None
 })
 export class QuestionAddComponent implements OnInit {
 
@@ -36,7 +36,7 @@ export class QuestionAddComponent implements OnInit {
   questionType = "MCQ Single";
   edit_ques_id: string;
   currentMode: string = "Create";
-  title: string = "Create Question";
+  title: string = "Add Question";
   editQuestion: Question;
   questonObservable: Observable<Question>;
   loadingData: boolean = false;

@@ -75,12 +75,9 @@ max-width: 70rem;
   /* margin-top: em; */
   margin-left: 8px;
   font-size: 12px;
+  margin-top: 2em;
 }
 
-.mat-tab-label {
-    font-weight: 700;
-    font-size: 11px;
-}
 
 .answer-group{
   margin-top: 1em;
@@ -157,6 +154,10 @@ max-width: 70rem;
 
 ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
 ::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
+::ng-deep .mat-tab-label  {
+  font-weight: 500;
+  font-size: 11px;
+}
 
 
 

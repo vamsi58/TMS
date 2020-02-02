@@ -5,6 +5,11 @@
   align-items: center;
 }
 
+.mat-card{
+  max-width: 500px;
+  /* box-sizing: border-box; */
+}
+
 .mat-card-content{
   border: 3px;
 }
