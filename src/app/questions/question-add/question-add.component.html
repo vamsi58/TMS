@@ -15,15 +15,12 @@
       <form [formGroup]="formGroup" (ngSubmit)="onCreate(formGroup.value)" class="question-add-form">
         <div fxLayout="column" class="control-layout">
 
-          <custom-dropdown [values]="dropdownTags" [items]="editTags" [label]="'Tags'" [formGroup]="formGroup"
-            (select)="onTagSelected($event)"></custom-dropdown>
+          <custom-dropdown [values]="dropdownTags" [items]="editTags" [label]="'Tags'" [formGroup]="formGroup" (select)="onTagSelected($event)"></custom-dropdown>
 
-          <custom-dropdown [values]="dropdownSkills" [items]="editSkills" [label]="'Skills'"
-            (select)="onSkillSelected($event)"></custom-dropdown>
+          <custom-dropdown [values]="dropdownSkills" [items]="editSkills" [label]="'Skills'" (select)="onSkillSelected($event)"></custom-dropdown>
 
           <mat-label class="custom-label" color="primary">Select Complexity</mat-label>
-          <mat-button-toggle-group name="complexity" class="form-element form-element-complexity"
-            [value]="defaultCommplexity" (change)="onComplexityChange($event)">
+          <mat-button-toggle-group name="complexity" class="form-element form-element-complexity" [value]="defaultCommplexity" (change)="onComplexityChange($event)">
             <mat-button-toggle value="low">Low</mat-button-toggle>
             <mat-button-toggle value="medium">Medium</mat-button-toggle>
             <mat-button-toggle value="high">High</mat-button-toggle>
@@ -33,125 +30,119 @@
         <div class="question-editor">
           <mat-label class="custom-label">Question</mat-label>
           <angular-editor class="question-textArea" [config]="config" formControlName="stmtHtml"></angular-editor>
-          <mat-error class="ques-err"
-            *ngIf="!formGroup.controls['stmtHtml'].valid && (formGroup.controls['stmtHtml'].dirty || formGroup.controls['stmtHtml'].touched)">
+          <mat-error class="ques-err" *ngIf="!formGroup.controls['stmtHtml'].valid && (formGroup.controls['stmtHtml'].dirty || formGroup.controls['stmtHtml'].touched)">
             {{getError('stmtHtml')}}
           </mat-error>
         </div>
         <div class="answer-editor">
           <mat-divider></mat-divider>
           <mat-label class="custom-label">Answer</mat-label>
-          <mat-tab-group animationDuration="1000ms" [selectedIndex]="defaultQuestionType"
-            (selectedTabChange)="onQuestionTypeChange($event)">
+          <mat-tab-group animationDuration="1000ms" [selectedIndex]="defaultQuestionType" (selectedTabChange)="onQuestionTypeChange($event)">
             <mat-tab label="MCQ Single">
               <div class="answer-group">
-                <div formArrayName="options" *ngFor="let option of formGroup.get('options').controls; let i=index"
-                  fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+                <div formArrayName="options" *ngFor="let option of formGroup.get('options').controls; let i=index" fxLayout="row" fxLayout.xs="column"
+                  fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
                   <div [formGroupName]="i" fxFlex="100%">
                     {{ setOptionValue(option, i) }}
                     <mat-form-field floatLabel="never" class="form-element-option" appearance="standard">
                       <input name="option" type="text" matInput placeholder="option" formControlName="option">
                     </mat-form-field>
-                    <mat-checkbox formControlName="isCorrect" [checked]="selected === i" (change)="selected = i"
-                      class="form-element-correct"></mat-checkbox>
+                    <mat-checkbox formControlName="isCorrect" [checked]="selected === i" (change)="selected = i" class="form-element-correct"></mat-checkbox>
                     <mat-form-field floatLabel="never" class="form-element-answer" appearance="outline">
                       <!-- <mat-label>Choice {{i+1}}</mat-label> -->
-                      <textarea name="answer" matInput placeholder="Enter your choice here..." formControlName="answer"
-                        cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"> </textarea>
-                      <mat-error *ngIf="option.controls['answer'].invalid && option.controls['answer'].touched">
-                        {{getError('answer')}}
-                      </mat-error>
+                      <textarea name="answer" matInput placeholder="Enter your choice here..." formControlName="answer" cdkTextareaAutosize cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="5"> </textarea>
+                        <mat-error *ngIf="option.controls['answer'].invalid && option.controls['answer'].touched">
+                          {{getError('answer')}}
+                        </mat-error>
                     </mat-form-field>
-                    <button *ngIf="i!==0 &&i!==1" type="button" mat-icon-button color="warn" class="form-elemnt-delete mat-small"
-                      (click)="deleteOption(i)">
+                    <button *ngIf="i!==0 &&i!==1" type="button" mat-icon-button color="warn" class="form-elemnt-delete mat-small" (click)="deleteOption(i)">
                       <mat-icon class="add-icon">close</mat-icon>
                     </button>
-                    <button *ngIf="formGroup.get('options').length==(i+1)" class="add-button mat-small" type="button"
-                      mat-icon-button color="primary" (click)="addNewOption()">
+                    <button *ngIf="formGroup.get('options').length==(i+1)" class="add-button mat-small" type="button" mat-icon-button color="primary"
+                      (click)="addNewOption()">
                       <mat-icon class="add-icon">add</mat-icon>Add Option
-                    </button>
+                      </button>
                   </div>
-                </div>
               </div>
-            </mat-tab>
-            <mat-tab label="MCQ Multiple">
-              <div class="answer-group">
-                <div formArrayName="options" *ngFor="let option of formGroup.get('options').controls; let i=index"
-                  fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
-                  <div [formGroupName]="i" fxFlex="100%">
-                    {{ setOptionValue(option, i) }}
-                    <mat-form-field floatLabel="never" class="form-element-option" appearance="standard">
-                      <input name="option" type="text" matInput placeholder="option" formControlName="option">
-                    </mat-form-field>
-                    <mat-checkbox formControlName="isCorrect" class="form-element-correct"></mat-checkbox>
-                    <mat-form-field floatLabel="never" class="form-element-answer" appearance="outline">
-                      <!-- <mat-label>Choice {{i+1}}</mat-label> -->
-                      <textarea name="answer" matInput placeholder="Enter your choice here..."
-                        formControlName="answer" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"> </textarea>
-                      <mat-error *ngIf="option.controls['answer'].invalid && option.controls['answer'].touched">
-                        {{getError('answer')}}
-                      </mat-error>
-                    </mat-form-field>
-                    <button *ngIf="i!==0 &&i!==1" type="button" mat-icon-button color="warn" class="form-elemnt-delete mat-small"
-                      (click)="deleteOption(i)">
-                      <mat-icon class="add-icon">close</mat-icon>
-                    </button>
-                    <button *ngIf="formGroup.get('options').length==(i+1)" class="add-button mat-small" type="button"
-                      mat-icon-button color="primary" (click)="addNewOption()">
-                      <mat-icon class="add-icon">add</mat-icon>Add Option
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </mat-tab>
-            <mat-tab label="One Word">
-              <div class="answer-group" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
-                fxLayoutAlign="center">
-                <div fxFlex="100%">
-                  <mat-form-field class="oneword-answer" appearance="outline">
-                    <input matInput placeholder="Write your one word answer here..." formControlName="descAnswer">
-                    <mat-error *ngIf="!formGroup.controls['descAnswer'].valid">
-                      {{getError('onewordAnswer')}}
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-            </mat-tab>
-            <mat-tab label="Descriptive">
-              <div class="answer-group" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
-                fxLayoutAlign="center">
-                <div fxFlex="100%">
-                  <mat-form-field class="descriptive-answer" appearance="outline">
-                    <textarea matInput rows="4" placeholder="Write your descriptive answer here..."
-                      formControlName="descAnswer"></textarea>
-                    <mat-error *ngIf="!formGroup.controls['descAnswer'].valid">
-                      {{getError('descAnswer')}}
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
         </div>
-        <div *ngIf='questionType !== "Descriptive"' class="answer-editor">
-          <mat-label class="custom-label">Explanation</mat-label>
-          <div class="answer-group" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
-            fxLayoutAlign="center">
-            <div fxFlex="100%">
-              <mat-form-field class="answer-explantion" appearance="outline">
-                <textarea matInput rows="4" placeholder="Write your explnation for answer here..."
-                  formControlName="comment"></textarea>
-              </mat-form-field>
-            </div>
+        </mat-tab>
+        <mat-tab label="MCQ Multiple">
+          <div class="answer-group">
+            <div formArrayName="options" *ngFor="let option of formGroup.get('options').controls; let i=index" fxLayout="row" fxLayout.xs="column"
+              fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+              <div [formGroupName]="i" fxFlex="100%">
+                {{ setOptionValue(option, i) }}
+                <mat-form-field floatLabel="never" class="form-element-option" appearance="standard">
+                  <input name="option" type="text" matInput placeholder="option" formControlName="option">
+                </mat-form-field>
+                <mat-checkbox formControlName="isCorrect" class="form-element-correct"></mat-checkbox>
+                <mat-form-field floatLabel="never" class="form-element-answer" appearance="outline">
+                  <!-- <mat-label>Choice {{i+1}}</mat-label> -->
+                  <textarea name="answer" matInput placeholder="Enter your choice here..." formControlName="answer" cdkTextareaAutosize cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"> </textarea>
+                    <mat-error *ngIf="option.controls['answer'].invalid && option.controls['answer'].touched">
+                      {{getError('answer')}}
+                    </mat-error>
+                </mat-form-field>
+                <button *ngIf="i!==0 &&i!==1" type="button" mat-icon-button color="warn" class="form-elemnt-delete mat-small" (click)="deleteOption(i)">
+                      <mat-icon class="add-icon">close</mat-icon>
+                    </button>
+                <button *ngIf="formGroup.get('options').length==(i+1)" class="add-button mat-small" type="button" mat-icon-button color="primary"
+                  (click)="addNewOption()">
+                  <mat-icon class="add-icon">add</mat-icon>Add Option
+                  </button>
+              </div>
           </div>
-        </div>
-        <div class="form-element" appearance="outline">
-          <button mat-raised-button color="primary" type="submit" class="button"
-            [disabled]="!formGroup.valid">{{submitButton}}</button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+</div>
+</mat-tab>
+<mat-tab label="One Word">
+  <div class="answer-group" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+    <div fxFlex="100%">
+      <mat-form-field class="oneword-answer" appearance="outline">
+        <input matInput placeholder="Write your one word answer here..." formControlName="descAnswer">
+        <mat-error *ngIf="!formGroup.controls['descAnswer'].valid">
+          {{getError('onewordAnswer')}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+</mat-tab>
+<mat-tab label="Descriptive">
+  <div class="answer-group" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+    <div fxFlex="100%">
+      <mat-form-field class="descriptive-answer" appearance="outline">
+        <textarea matInput rows="4" placeholder="Write your descriptive answer here..." formControlName="descAnswer"></textarea>
+        <mat-error *ngIf="!formGroup.controls['descAnswer'].valid">
+          {{getError('descAnswer')}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+</mat-tab>
+</mat-tab-group>
+</div>
+<div *ngIf='questionType !== "Descriptive"' class="answer-editor">
+  <mat-label class="custom-label">Explanation</mat-label>
+  <div class="answer-group" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+    <div fxFlex="100%">
+      <mat-form-field class="answer-explantion" appearance="outline">
+        <textarea matInput rows="4" placeholder="Write your explnation for answer here..." formControlName="comment"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<!--<mat-divider></mat-divider>-->
+<div class="form-element" appearance="outline">
+  <div class="fill"></div>
+  <div class="fill"></div>
+  <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">{{submitButton}}</button>
+  <button class="button-reset" type="reset" (click)="onReset()" mat-stroked-button color="primary">Reset</button>
+  <button class="button-cancel" mat-button color="primary">Cancel</button>
+</div>
+</form>
+</mat-card-content>
+</mat-card>
 </div>
 <ng-template #loading>
   <div class="progress-spinner">

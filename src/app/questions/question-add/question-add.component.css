@@ -159,5 +159,13 @@ max-width: 70rem;
   font-size: 11px;
 }
 
+.button-cancel{
+  margin-left:10px;
+}
+
+.button-reset{
+  margin-left:15px;
+}
+
 
 

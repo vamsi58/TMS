@@ -342,6 +342,22 @@ export class QuestionAddComponent implements OnInit {
         this.formGroup.get('descAnswer').value, this.formGroup.get('comment').value, 'to be approved', this.formGroup.get('complexity').value, currentUser, "", "");
     }
   }
+
+  onReset(){
+    this.loadingData = true;
+    this.createForm();
+    if (this.currentMode === "edit"){
+      this.getQuestion();
+    } else {
+      this.editTags = [];
+      this.editSkills = [];
+      this.defaultCommplexity = "medium";
+      this.formGroup.patchValue({});
+      this.loadingData = false;
+    }
+
+  }
+
 }
 
 
