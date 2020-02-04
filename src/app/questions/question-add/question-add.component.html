@@ -14,19 +14,16 @@
     <mat-card-content>
       <form [formGroup]="formGroup" (ngSubmit)="onCreate(formGroup.value)" class="question-add-form">
         <div fxLayout="column" class="control-layout">
-
           <custom-dropdown [values]="dropdownTags" [items]="editTags" [label]="'Tags'" [formGroup]="formGroup" (select)="onTagSelected($event)"></custom-dropdown>
-
           <custom-dropdown [values]="dropdownSkills" [items]="editSkills" [label]="'Skills'" (select)="onSkillSelected($event)"></custom-dropdown>
-
           <mat-label class="custom-label" color="primary">Select Complexity</mat-label>
           <mat-button-toggle-group name="complexity" class="form-element form-element-complexity" [value]="defaultCommplexity" (change)="onComplexityChange($event)">
             <mat-button-toggle value="low">Low</mat-button-toggle>
             <mat-button-toggle value="medium">Medium</mat-button-toggle>
             <mat-button-toggle value="high">High</mat-button-toggle>
           </mat-button-toggle-group>
-
         </div>
+        
         <div class="question-editor">
           <mat-label class="custom-label">Question</mat-label>
           <angular-editor class="question-textArea" [config]="config" formControlName="stmtHtml"></angular-editor>
@@ -136,9 +133,9 @@
 <div class="form-element" appearance="outline">
   <div class="fill"></div>
   <div class="fill"></div>
-  <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">{{submitButton}}</button>
   <button class="button-reset" type="reset" (click)="onReset()" mat-stroked-button color="primary">Reset</button>
   <button class="button-cancel" mat-button color="primary">Cancel</button>
+  <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">{{submitButton}}</button>
 </div>
 </form>
 </mat-card-content>

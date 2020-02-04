@@ -77,6 +77,9 @@ max-width: 70rem;
   font-size: 12px;
   margin-top: 2em;
 }
+.complexity{
+  margin-top: 2.2em;
+}
 
 
 .answer-group{
@@ -166,6 +169,8 @@ max-width: 70rem;
 .button-reset{
   margin-left:15px;
 }
+
+
 
 
 
