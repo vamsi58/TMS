@@ -64,7 +64,7 @@ router.post("/signin", (req, res, next) => {
         })
         .catch(err => {
             return res.status(401).json({
-                message: "Invalid authentication credentials!"
+                message: "Invalid user name or password"
             });
         });
 });
