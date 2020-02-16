@@ -7,7 +7,6 @@
 
 .mat-card{
   max-width: 400px;
-  max-height: 300px;
   box-sizing: border-box; 
 }
 
@@ -16,9 +15,16 @@
   margin-bottom: 1em;
 }
 
-.title{
-  color: rgb(55, 55, 211);
+mat-card-content,mat-card-actions{
+  margin-top:25px;
 }
+.submit-button{
+  margin-top:15px;
+}
+.mat-foooter{
+  font-size:13px;
+}
+
 
 
 ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}

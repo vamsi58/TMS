@@ -12,7 +12,7 @@
   box-sizing: border-box;
 }
 .mat-card-content{
-margin-left: 2em;
+ margin-left: 2em;
 }
 .mat-card-header{
     display: flex;
@@ -21,7 +21,6 @@ margin-left: 2em;
 .fill {
   flex: 1;
 }
-
 .question-add-form {
   min-width: 150px;
   max-width: 100em;
@@ -31,7 +30,6 @@ margin-left: 2em;
 
 .form-element, .question-editor {
   width: 100%;
-  /* margin-bottom: .50em; */
 }
 
 .ques-err{
@@ -62,7 +60,8 @@ margin-left: 2em;
   font-size:11px;
 }
 
-.question-editor, .answer-editor{
+.question-editor, 
+.answer-editor{
 margin-top: 2em;
 max-width: 70rem;
 }
